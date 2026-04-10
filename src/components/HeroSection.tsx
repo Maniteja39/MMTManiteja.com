@@ -6,15 +6,15 @@ const HeroSection = () => {
       <div className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7 space-y-6">
           <p className="text-accent font-medium tracking-wide uppercase text-sm">
-            Senior Backend Engineer
+            Senior Software Engineer
           </p>
           <h1 className="text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
             Hi, I'm{" "}
             <span className="text-accent">Maniteja.</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-[55ch]">
-            Senior Backend Engineer at IFS.ai, designing and building scalable,
-            high-performance distributed systems. Based in San Francisco, CA.
+            Senior Software Engineer at IFS with 6+ years of experience building
+            scalable full-stack applications. Based in San Francisco, CA.
           </p>
           <div className="flex gap-4 pt-2">
             <a

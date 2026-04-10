@@ -1,10 +1,10 @@
 import { Code, Server, Database, Cloud, GraduationCap, MapPin } from "lucide-react";
 
 const skills = [
-  { icon: Server, label: "Backend Systems" },
-  { icon: Database, label: "Distributed Databases" },
-  { icon: Cloud, label: "Cloud Architecture" },
-  { icon: Code, label: "API Design" },
+  { icon: Code, label: "Java / Spring Boot" },
+  { icon: Server, label: "Angular / JavaScript" },
+  { icon: Database, label: "SQL / Hibernate" },
+  { icon: Cloud, label: "AWS / Docker" },
 ];
 
 const AboutSection = () => {
@@ -17,15 +17,15 @@ const AboutSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="space-y-6">
             <p className="text-lg text-muted-foreground leading-relaxed">
-              As a Senior Backend Engineer at IFS.ai, I design and build scalable,
-              high-performance distributed systems. I'm passionate about crafting
-              robust backend architectures that power mission-critical applications
-              at scale.
+              As a Senior Software Engineer at IFS, I bring 6+ years of experience
+              designing and building full-stack web applications. From Java and
+              Spring Boot backends to Angular frontends, I deliver scalable,
+              high-performance solutions end to end.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              With deep expertise in backend engineering, I focus on building
-              reliable, efficient, and maintainable systems. My work spans data
-              pipelines, API design, and cloud-native infrastructure.
+              I've worked across enterprise SaaS, government contracting, and
+              supply chain platforms — optimizing performance, leading migrations,
+              and building microservices architectures that serve real business needs.
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
               <div className="flex items-center gap-2 text-muted-foreground">
