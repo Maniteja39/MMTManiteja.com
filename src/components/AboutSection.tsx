@@ -1,10 +1,10 @@
 import { Code, Server, Database, Cloud, GraduationCap, MapPin } from "lucide-react";
 
 const skills = [
-  { icon: Server, label: "Backend Systems" },
-  { icon: Database, label: "Distributed Databases" },
-  { icon: Cloud, label: "Cloud Architecture" },
-  { icon: Code, label: "API Design" },
+  { icon: Code, label: "Java / Spring Boot" },
+  { icon: Server, label: "Angular / JavaScript" },
+  { icon: Database, label: "SQL / Hibernate" },
+  { icon: Cloud, label: "AWS / Docker" },
 ];
 
 const AboutSection = () => {
