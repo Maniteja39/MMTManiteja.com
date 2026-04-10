@@ -2,22 +2,22 @@ import { ArrowRight } from "lucide-react";
 
 const projects = [
   {
-    title: "Analytics Engine",
+    title: "Scalable Data Pipeline",
     description:
-      "Real-time distributed system processing millions of events per second, reducing data latency by 70%.",
-    tags: ["Go", "Kafka", "Redis"],
+      "Designed and implemented a high-throughput data pipeline processing millions of events in real-time with fault tolerance and low latency.",
+    tags: ["Python", "Kafka", "Redis"],
   },
   {
-    title: "Microservice Orchestration",
+    title: "Microservices Architecture",
     description:
-      "Robust orchestration layer improving service availability from 99.5% to 99.99% uptime.",
-    tags: ["Kubernetes", "gRPC", "Prometheus"],
+      "Built a robust microservices orchestration layer improving system availability and enabling independent service scaling.",
+    tags: ["Go", "Kubernetes", "gRPC"],
   },
   {
-    title: "Performance Profiler",
+    title: "API Gateway & Platform",
     description:
-      "Profiling tool that identified and resolved bottlenecks, achieving a 30% reduction in API response times.",
-    tags: ["Rust", "Flamegraphs", "CLI"],
+      "Developed a centralized API gateway handling authentication, rate limiting, and request routing for distributed backend services.",
+    tags: ["Node.js", "PostgreSQL", "Docker"],
   },
 ];
 
@@ -26,7 +26,7 @@ const ProjectsSection = () => {
     <section id="projects" className="py-32">
       <div className="container mx-auto px-8">
         <h2 className="text-4xl lg:text-5xl font-bold mb-16 text-center text-foreground">
-          Selected Projects
+          Projects
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
@@ -55,7 +55,7 @@ const ProjectsSection = () => {
                 href="#"
                 className="inline-flex items-center gap-1 text-accent font-semibold text-sm group-hover:gap-2 transition-all duration-200"
               >
-                View Case Study <ArrowRight className="w-4 h-4" />
+                Learn More <ArrowRight className="w-4 h-4" />
               </a>
             </div>
           ))}

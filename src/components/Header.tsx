@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Linkedin } from "lucide-react";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -16,9 +17,9 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-8 py-6 flex justify-between items-center">
-        <div className="text-lg font-semibold text-foreground">Alex Chen</div>
-        <nav className="flex gap-8">
-          {["About", "Projects", "Contact"].map((item) => (
+        <div className="text-lg font-semibold text-foreground">Maniteja M.</div>
+        <nav className="flex gap-8 items-center">
+          {["About", "Experience", "Projects", "Contact"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
@@ -27,6 +28,14 @@ const Header = () => {
               {item}
             </a>
           ))}
+          <a
+            href="https://www.linkedin.com/in/maniteja-m-6987a71b9/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-accent transition-colors duration-200"
+          >
+            <Linkedin className="w-5 h-5" />
+          </a>
         </nav>
       </div>
     </header>

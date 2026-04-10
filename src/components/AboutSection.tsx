@@ -1,10 +1,10 @@
-import { Code, Server, Database, Globe } from "lucide-react";
+import { Code, Server, Database, Cloud, GraduationCap, MapPin } from "lucide-react";
 
 const skills = [
-  { icon: Code, label: "TypeScript" },
-  { icon: Server, label: "Go" },
-  { icon: Database, label: "PostgreSQL" },
-  { icon: Globe, label: "AWS" },
+  { icon: Server, label: "Backend Systems" },
+  { icon: Database, label: "Distributed Databases" },
+  { icon: Cloud, label: "Cloud Architecture" },
+  { icon: Code, label: "API Design" },
 ];
 
 const AboutSection = () => {
@@ -17,16 +17,26 @@ const AboutSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="space-y-6">
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I solve complex problems with elegant, performant solutions. With
-              8+ years of experience building distributed systems and scalable
-              architectures, I approach every challenge with a focus on
-              reliability, efficiency, and long-term maintainability.
+              As a Senior Backend Engineer at IFS.ai, I design and build scalable,
+              high-performance distributed systems. I'm passionate about crafting
+              robust backend architectures that power mission-critical applications
+              at scale.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              From intricate algorithms to production-grade infrastructure, I'm
-              driven by a desire to understand the underlying mechanics of
-              technology and to craft software that operates with precision.
+              With deep expertise in backend engineering, I focus on building
+              reliable, efficient, and maintainable systems. My work spans data
+              pipelines, API design, and cloud-native infrastructure.
             </p>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <MapPin className="w-4 h-4 text-accent" />
+                <span>San Francisco, CA</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <GraduationCap className="w-4 h-4 text-accent" />
+                <span>University at Buffalo</span>
+              </div>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {skills.map(({ icon: Icon, label }) => (
@@ -38,16 +48,6 @@ const AboutSection = () => {
                 <span className="text-foreground font-medium">{label}</span>
               </div>
             ))}
-            <div className="col-span-2 grid grid-cols-2 gap-4 mt-2">
-              <div className="p-4 rounded-lg bg-card border border-border text-center">
-                <div className="text-3xl font-bold text-accent">8+</div>
-                <div className="text-sm text-muted-foreground mt-1">Years Experience</div>
-              </div>
-              <div className="p-4 rounded-lg bg-card border border-border text-center">
-                <div className="text-3xl font-bold text-accent">40+</div>
-                <div className="text-sm text-muted-foreground mt-1">Projects Shipped</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
