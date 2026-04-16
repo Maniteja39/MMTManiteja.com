@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const projects = [
   {
@@ -22,17 +23,23 @@ const projects = [
 ];
 
 const ProjectsSection = () => {
+  const sectionRef = useScrollAnimation<HTMLElement>();
+
   return (
-    <section id="projects" className="py-32">
+    <section ref={sectionRef} id="projects" className="py-32">
       <div className="container mx-auto px-8">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-16 text-center text-foreground">
+        <h2
+          className="animate-child text-4xl lg:text-5xl font-bold mb-16 text-center text-foreground"
+          style={{ opacity: 0 }}
+        >
           Projects
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
             <div
               key={project.title}
-              className="group bg-card p-6 rounded-lg border border-border hover:border-accent/30 transition-all duration-300"
+              className="animate-child group bg-card p-6 rounded-lg border border-border hover:border-accent/30 transition-all duration-300"
+              style={{ opacity: 0 }}
             >
               <div className="aspect-video rounded-md overflow-hidden mb-6 bg-secondary" />
               <h3 className="text-xl font-semibold text-foreground mb-3">

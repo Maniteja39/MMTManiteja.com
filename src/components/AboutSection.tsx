@@ -1,4 +1,5 @@
 import { Code, Server, Database, Cloud, GraduationCap, MapPin } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const skills = [
   { icon: Code, label: "Java / Spring Boot" },
@@ -8,14 +9,19 @@ const skills = [
 ];
 
 const AboutSection = () => {
+  const sectionRef = useScrollAnimation<HTMLElement>();
+
   return (
-    <section id="about" className="py-32">
+    <section ref={sectionRef} id="about" className="py-32">
       <div className="container mx-auto px-8">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-12 text-center text-foreground">
+        <h2
+          className="animate-child text-4xl lg:text-5xl font-bold mb-12 text-center text-foreground"
+          style={{ opacity: 0 }}
+        >
           About Me
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          <div className="space-y-6">
+          <div className="animate-child space-y-6" style={{ opacity: 0 }}>
             <p className="text-lg text-muted-foreground leading-relaxed">
               As a Senior Software Engineer at IFS, I bring 6+ years of experience
               designing and building full-stack web applications. From Java and
@@ -38,7 +44,7 @@ const AboutSection = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="animate-child grid grid-cols-2 gap-4" style={{ opacity: 0 }}>
             {skills.map(({ icon: Icon, label }) => (
               <div
                 key={label}

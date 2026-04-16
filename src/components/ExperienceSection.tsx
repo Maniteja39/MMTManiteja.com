@@ -1,4 +1,5 @@
 import { Briefcase } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const experiences = [
   {
@@ -84,17 +85,23 @@ const experiences = [
 ];
 
 const ExperienceSection = () => {
+  const sectionRef = useScrollAnimation<HTMLElement>();
+
   return (
-    <section id="experience" className="py-32">
+    <section ref={sectionRef} id="experience" className="py-32">
       <div className="container mx-auto px-8">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-16 text-center text-foreground">
+        <h2
+          className="animate-child text-4xl lg:text-5xl font-bold mb-16 text-center text-foreground"
+          style={{ opacity: 0 }}
+        >
           Experience
         </h2>
         <div className="max-w-3xl mx-auto space-y-6">
           {experiences.map((exp, i) => (
             <div
               key={i}
-              className="p-6 rounded-lg bg-card border border-border hover:border-accent/30 transition-colors duration-200"
+              className="animate-child p-6 rounded-lg bg-card border border-border hover:border-accent/30 transition-colors duration-200"
+              style={{ opacity: 0 }}
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-md bg-secondary shrink-0">

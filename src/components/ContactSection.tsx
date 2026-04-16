@@ -1,17 +1,29 @@
 import { Mail, Linkedin } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const ContactSection = () => {
+  const sectionRef = useScrollAnimation<HTMLElement>();
+
   return (
-    <section id="contact" className="py-32">
+    <section ref={sectionRef} id="contact" className="py-32">
       <div className="container mx-auto px-8 text-center">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-foreground">
+        <h2
+          className="animate-child text-4xl lg:text-5xl font-bold mb-6 text-foreground"
+          style={{ opacity: 0 }}
+        >
           Let's Connect
         </h2>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
+        <p
+          className="animate-child text-xl text-muted-foreground max-w-2xl mx-auto mb-12"
+          style={{ opacity: 0 }}
+        >
           I'm always open to discussing new opportunities, collaborations, and
           innovative backend engineering challenges. Feel free to reach out.
         </p>
-        <div className="flex justify-center gap-4">
+        <div
+          className="animate-child flex justify-center gap-4"
+          style={{ opacity: 0 }}
+        >
           <a
             href="https://www.linkedin.com/in/maniteja-m-6987a71b9/"
             target="_blank"
