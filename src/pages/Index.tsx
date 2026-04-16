@@ -5,8 +5,11 @@ import ExperienceSection from "@/components/ExperienceSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import { useScrollAnimations } from "@/hooks/useScrollAnimations";
 
 const Index = () => {
+  useScrollAnimations();
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

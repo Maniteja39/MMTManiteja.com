@@ -1,16 +1,20 @@
-import heroBg from "@/assets/hero-bg.jpg";
+import { Suspense } from "react";
+import ParticleBackground from "@/components/ParticleBackground";
 
 const HeroSection = () => {
   return (
-    <section className="min-h-screen flex items-center pt-20">
-      <div className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7 space-y-6">
+    <section className="min-h-screen flex items-center pt-20 relative overflow-hidden">
+      <Suspense fallback={null}>
+        <ParticleBackground />
+      </Suspense>
+      <div className="container mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        <div className="lg:col-span-8 space-y-6">
           <p className="text-accent font-medium tracking-wide uppercase text-sm">
             Senior Software Engineer
           </p>
-          <h1 className="text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
+          <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-foreground leading-tight">
             Hi, I'm{" "}
-            <span className="text-accent">Maniteja.</span>
+            <span className="text-gradient">Maniteja.</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-[55ch]">
             Senior Software Engineer at IFS with 6+ years of experience building
@@ -29,18 +33,6 @@ const HeroSection = () => {
             >
               View Experience
             </a>
-          </div>
-        </div>
-        <div className="lg:col-span-5">
-          <div className="relative aspect-square rounded-lg overflow-hidden shadow-2xl shadow-primary/10">
-            <img
-              src={heroBg}
-              alt="Technology background"
-              className="w-full h-full object-cover"
-              width={1280}
-              height={720}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
           </div>
         </div>
       </div>
