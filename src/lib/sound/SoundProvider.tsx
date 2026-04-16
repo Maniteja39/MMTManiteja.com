@@ -20,9 +20,11 @@ const SoundContext = createContext<SoundContextValue | null>(null);
 const MUTE_STORAGE_KEY = "mmt-sfx-muted";
 
 export const SoundProvider = ({ children }: { children: ReactNode }) => {
+  // Default to MUTED. Only enable sound if the user has explicitly
+  // unmuted in a previous visit (localStorage "0").
   const [muted, setMuted] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return window.localStorage.getItem(MUTE_STORAGE_KEY) === "1";
+    if (typeof window === "undefined") return true;
+    return window.localStorage.getItem(MUTE_STORAGE_KEY) !== "0";
   });
   const [unlocked, setUnlocked] = useState(false);
 
