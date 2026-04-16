@@ -2,16 +2,25 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "lucide-react";
+import { useSound } from "@/lib/sound/SoundProvider";
+import type { SoundName } from "@/lib/sound/SoundEngine";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
+const projects: Array<{
+  title: string;
+  description: string;
+  tags: string[];
+  accent: string;
+  sound: SoundName;
+}> = [
   {
     title: "Scalable Data Pipeline",
     description:
       "Designed and implemented a high-throughput data pipeline processing millions of events in real-time with fault tolerance and low latency.",
     tags: ["Python", "Kafka", "Redis"],
     accent: "#F5B820",
+    sound: "projectA",
   },
   {
     title: "Microservices Architecture",
@@ -19,6 +28,7 @@ const projects = [
       "Built a robust microservices orchestration layer improving system availability and enabling independent service scaling.",
     tags: ["Go", "Kubernetes", "gRPC"],
     accent: "#6366f1",
+    sound: "projectB",
   },
   {
     title: "API Gateway & Platform",
@@ -26,11 +36,13 @@ const projects = [
       "Developed a centralized API gateway handling authentication, rate limiting, and request routing for distributed backend services.",
     tags: ["Node.js", "PostgreSQL", "Docker"],
     accent: "#22d3ee",
+    sound: "projectC",
   },
 ];
 
 const ProjectsSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { play } = useSound();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -60,11 +72,17 @@ const ProjectsSection = () => {
           duration: 0.8,
           stagger: 0.13,
           ease: "power2.out",
-          scrollTrigger: { trigger: el, start: "top 72%", toggleActions: "play none none none" },
+          scrollTrigger: {
+            trigger: el,
+            start: "top 72%",
+            toggleActions: "play none none none",
+            onEnter: () => play("whoosh"),
+          },
         }
       );
     }, el);
     return () => ctx.revert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -107,6 +125,7 @@ const ProjectsSection = () => {
                 (e.currentTarget as HTMLDivElement).style.boxShadow =
                   `0 0 50px rgba(0,0,0,0.35), 0 0 30px ${project.accent}30`;
                 (e.currentTarget as HTMLDivElement).style.borderColor = `${project.accent}30`;
+                play(project.sound);
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLDivElement).style.boxShadow =
@@ -154,6 +173,7 @@ const ProjectsSection = () => {
                 href="#"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-200 group-hover:gap-3"
                 style={{ color: project.accent }}
+                onClick={() => play("click")}
               >
                 Learn More <ArrowRight className="w-4 h-4" />
               </a>

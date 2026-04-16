@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Download } from "lucide-react";
+import { useSound } from "@/lib/sound/SoundProvider";
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { play } = useSound();
 
   useEffect(() => {
     const el = containerRef.current;
@@ -83,6 +85,8 @@ const HeroSection = () => {
                 color: "#04040b",
                 boxShadow: "0 0 30px rgba(245,184,32,0.35)",
               }}
+              onMouseEnter={() => play("hover")}
+              onClick={() => play("clickPrimary")}
             >
               Get In Touch
             </a>
@@ -95,6 +99,8 @@ const HeroSection = () => {
                 border: "1px solid rgba(255,255,255,0.12)",
                 backdropFilter: "blur(8px)",
               }}
+              onMouseEnter={() => play("hover")}
+              onClick={() => play("click")}
             >
               View Experience
             </a>
@@ -108,6 +114,8 @@ const HeroSection = () => {
                 border: "1px solid rgba(99,102,241,0.25)",
                 backdropFilter: "blur(8px)",
               }}
+              onMouseEnter={() => play("hover")}
+              onClick={() => play("descend")}
             >
               <Download className="w-4 h-4" />
               Resume

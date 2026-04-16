@@ -9,6 +9,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import { SoundProvider } from "@/lib/sound/SoundProvider";
 
 // Lazy-load the heavy 3D scene — keeps first paint fast
 const Scene3D = lazy(() => import("@/components/Scene3D"));
@@ -21,7 +22,7 @@ const Index = () => {
   }, []);
 
   return (
-    <>
+    <SoundProvider>
       {/* Loading screen — overlays everything until dismissed */}
       {!loaded && <LoadingScreen onFinished={handleLoadFinished} />}
 
@@ -50,7 +51,7 @@ const Index = () => {
           <Footer />
         </div>
       </div>
-    </>
+    </SoundProvider>
   );
 };
 

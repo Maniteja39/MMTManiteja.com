@@ -2,11 +2,13 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Mail, Linkedin, ArrowRight, Download } from "lucide-react";
+import { useSound } from "@/lib/sound/SoundProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ContactSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { play } = useSound();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -26,11 +28,13 @@ const ContactSection = () => {
             trigger: el,
             start: "top 75%",
             toggleActions: "play none none none",
+            onEnter: () => play("whoosh"),
           },
         }
       );
     }, el);
     return () => ctx.revert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -86,6 +90,8 @@ const ContactSection = () => {
                 color: "#04040b",
                 boxShadow: "0 0 35px rgba(245,184,32,0.3)",
               }}
+              onMouseEnter={() => play("hover")}
+              onClick={() => play("success")}
             >
               <Linkedin className="w-5 h-5" />
               Connect on LinkedIn
@@ -101,6 +107,8 @@ const ContactSection = () => {
                 border: "1px solid rgba(255,255,255,0.1)",
                 backdropFilter: "blur(8px)",
               }}
+              onMouseEnter={() => play("hover")}
+              onClick={() => play("whoosh")}
             >
               <Mail className="w-5 h-5" />
               Send an Email
@@ -116,6 +124,8 @@ const ContactSection = () => {
                 border: "1px solid rgba(99,102,241,0.25)",
                 backdropFilter: "blur(8px)",
               }}
+              onMouseEnter={() => play("hover")}
+              onClick={() => play("descend")}
             >
               <Download className="w-5 h-5" />
               Download Resume

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { Linkedin, Menu, X } from "lucide-react";
+import { Linkedin, Menu, X, Volume2, VolumeX } from "lucide-react";
+import { useSound } from "@/lib/sound/SoundProvider";
 
 const NAV_ITEMS = ["About", "Experience", "Projects", "Contact"];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { play, muted, toggleMute } = useSound();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,12 +63,14 @@ const Header = () => {
                 href={`#${item.toLowerCase()}`}
                 className="text-sm font-medium transition-colors duration-200"
                 style={{ color: "rgba(226,232,240,0.55)" }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "#F5B820")
-                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#F5B820";
+                  play("hover");
+                }}
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.color = "rgba(226,232,240,0.55)")
                 }
+                onClick={() => play("whoosh")}
               >
                 {item}
               </a>
@@ -77,15 +81,41 @@ const Header = () => {
               rel="noopener noreferrer"
               className="transition-colors duration-200"
               style={{ color: "rgba(226,232,240,0.55)" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "#F5B820")
-              }
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#F5B820";
+                play("hover");
+              }}
               onMouseLeave={(e) =>
                 (e.currentTarget.style.color = "rgba(226,232,240,0.55)")
               }
+              onClick={() => play("click")}
             >
               <Linkedin className="w-5 h-5" />
             </a>
+
+            {/* Mute toggle */}
+            <button
+              onClick={toggleMute}
+              aria-label={muted ? "Unmute sound effects" : "Mute sound effects"}
+              aria-pressed={!muted}
+              className="transition-colors duration-200"
+              style={{
+                color: muted ? "rgba(226,232,240,0.35)" : "#F5B820",
+                background: "transparent",
+                border: "none",
+                padding: 0,
+                display: "flex",
+                alignItems: "center",
+              }}
+              onMouseEnter={(e) => {
+                if (muted) e.currentTarget.style.color = "#F5B820";
+              }}
+              onMouseLeave={(e) => {
+                if (muted) e.currentTarget.style.color = "rgba(226,232,240,0.35)";
+              }}
+            >
+              {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </button>
           </nav>
 
           {/* Mobile hamburger button */}
@@ -96,7 +126,10 @@ const Header = () => {
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.08)",
             }}
-            onClick={() => setMenuOpen((prev) => !prev)}
+            onClick={() => {
+              play(menuOpen ? "menuClose" : "menuOpen");
+              setMenuOpen((prev) => !prev);
+            }}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
             {menuOpen ? (
@@ -137,7 +170,10 @@ const Header = () => {
                 transform: menuOpen ? "translateY(0)" : "translateY(16px)",
                 opacity: menuOpen ? 1 : 0,
               }}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                play("whoosh");
+                setMenuOpen(false);
+              }}
             >
               <span
                 className="text-xs font-normal tracking-[0.2em] block mb-1"
@@ -163,7 +199,10 @@ const Header = () => {
               transform: menuOpen ? "translateY(0)" : "translateY(16px)",
               opacity: menuOpen ? 1 : 0,
             }}
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              play("click");
+              setMenuOpen(false);
+            }}
           >
             <Linkedin className="w-4 h-4" />
             LinkedIn

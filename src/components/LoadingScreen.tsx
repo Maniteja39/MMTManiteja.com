@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSound } from "@/lib/sound/SoundProvider";
 
 interface LoadingScreenProps {
   /** Called when the exit animation completes */
@@ -10,6 +11,7 @@ interface LoadingScreenProps {
 const LoadingScreen = ({ onFinished, minDuration = 2200 }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
+  const { play } = useSound();
 
   useEffect(() => {
     const start = Date.now();
@@ -23,6 +25,8 @@ const LoadingScreen = ({ onFinished, minDuration = 2200 }: LoadingScreenProps) =
 
       if (p >= 1) {
         clearInterval(interval);
+        // Intro chime — no-op if AudioContext hasn't been unlocked yet
+        play("chime");
         // Start exit animation
         setExiting(true);
         setTimeout(onFinished, 600); // match CSS transition
@@ -30,7 +34,7 @@ const LoadingScreen = ({ onFinished, minDuration = 2200 }: LoadingScreenProps) =
     }, 30);
 
     return () => clearInterval(interval);
-  }, [minDuration, onFinished]);
+  }, [minDuration, onFinished, play]);
 
   return (
     <div

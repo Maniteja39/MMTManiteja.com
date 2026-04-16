@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useSound } from "@/lib/sound/SoundProvider";
 
 /**
  * Custom glowing cursor — only on desktop (hidden on touch devices).
@@ -18,6 +19,18 @@ const CustomCursor = () => {
   const mouse = useRef({ x: -100, y: -100 });
   const ring = useRef({ x: -100, y: -100 });
   const raf = useRef(0);
+  const { play } = useSound();
+  const wasHovering = useRef(false);
+
+  // Fire a subtle tick whenever the cursor enters a hover target.
+  // Engine-side debounce (55ms) prevents double-triggers when an element
+  // also has its own onMouseEnter sound.
+  useEffect(() => {
+    if (hovering && !wasHovering.current) {
+      play("hover");
+    }
+    wasHovering.current = hovering;
+  }, [hovering, play]);
 
   useEffect(() => {
     // Skip on touch devices
