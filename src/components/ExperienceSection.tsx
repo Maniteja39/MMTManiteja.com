@@ -28,10 +28,13 @@ const experiences = [
     period: "Nov 2021 - Feb 2026 · 4 yrs 4 mos",
     location: "Germantown, Maryland · Remote",
     description: [
-      "Designed, developed, and implemented complete web applications from scratch, including front-end, back-end, database design, and deployments, using Java, Angular, and JavaScript.",
-      "Collaborated with cross-functional teams to ensure seamless integration of application components and deliver user-friendly and responsive web solutions.",
-      "Optimized application performance by identifying and addressing bottlenecks, resulting in a 25% improvement in load times.",
-      "Implemented Agile methodologies to ensure timely delivery of projects and effective communication within the team.",
+      "Built end-to-end web applications in Java (Spring Boot) and Angular — owning backend REST APIs, database schema, multi-step reactive form UIs, and deployment pipelines.",
+      "Designed a multi-tenant business-logic layer that routes tenant-specific rules through a single shared workflow, keeping the core code path clean while supporting divergent downstream requirements.",
+      "Shipped an API integration layer with strongly-typed POJOs, clean serialization / deserialization boundaries, and strict server-side validation for IPv4, email, phone, and address fields backed by external validation APIs.",
+      "Built an SLA reporting engine that calculates response times against business hours, weekends, and federal holidays, with per-tenant overrides — surfacing compliance metrics to operations teams.",
+      "Developed a multi-step Angular order workflow using Reactive Forms, Angular Material mat-tab-group, programmatic tab switching driven by field-level validation, and session-based form restoration.",
+      "Optimized SQL queries (pagination via LIMIT, tuned ORDER BY paths) and reduced page load times ~25% by profiling hot endpoints and tightening Hibernate fetch strategies.",
+      "Diagnosed and fixed production issues including browser-specific session/cache bugs, async form submission inconsistencies, and DNS / subdomain configuration exposure in AWS Route 53.",
     ],
   },
   {
@@ -157,7 +160,7 @@ const ExperienceSection = () => {
             className="text-xs font-semibold tracking-[0.25em] uppercase mb-3"
             style={{ opacity: 0, color: "#F5B820" }}
           >
-            002 — Experience
+            003 — Experience
           </p>
           <h2
             className="font-bold"

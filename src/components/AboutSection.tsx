@@ -83,14 +83,16 @@ const AboutSection = () => {
             <div className="space-y-4 sm:space-y-5">
               <p className="text-base lg:text-lg leading-relaxed" style={{ color: "rgba(226,232,240,0.7)" }}>
                 As a Senior Software Engineer at IFS, I bring 6+ years of experience
-                designing and building full-stack web applications. From Java and
-                Spring Boot backends to Angular frontends, I deliver scalable,
-                high-performance solutions end to end.
+                designing and building full-stack web applications — from Java and
+                Spring Boot backends to Angular reactive forms and dynamic UI
+                workflows on the frontend.
               </p>
               <p className="text-base lg:text-lg leading-relaxed" style={{ color: "rgba(226,232,240,0.7)" }}>
-                I've worked across enterprise SaaS, government contracting, and
-                supply chain platforms — optimizing performance, leading migrations,
-                and building microservices architectures that serve real business needs.
+                I've shipped multi-tenant platforms, API integration layers,
+                SLA reporting engines with complex business-hour and holiday
+                logic, and validation-heavy order workflows. Most of my work
+                lives at the intersection of clean REST APIs, real business
+                rules, and the long tail of production edge cases.
               </p>
               <div className="flex flex-wrap gap-5 pt-3">
                 <div className="flex items-center gap-2">

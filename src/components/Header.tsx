@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Linkedin, Menu, X, Volume2, VolumeX } from "lucide-react";
 import { useSound } from "@/lib/sound/SoundProvider";
 
-const NAV_ITEMS = ["About", "Experience", "Projects", "Contact"];
+const NAV_ITEMS = ["About", "Skills", "Experience", "Projects", "Contact"];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);

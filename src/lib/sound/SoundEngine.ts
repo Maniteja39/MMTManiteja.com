@@ -20,6 +20,7 @@ export type SoundName =
   | "projectA"
   | "projectB"
   | "projectC"
+  | "projectD"
   | "success"
   | "descend";
 
@@ -94,6 +95,9 @@ export class SoundEngine {
         break;
       case "projectC":
         this.playProjectTone(783.99); // G5
+        break;
+      case "projectD":
+        this.playProjectTone(987.77); // B5 — completes the C-E-G-B voicing
         break;
       case "success":
         this.playSuccess();

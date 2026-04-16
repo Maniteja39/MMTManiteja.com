@@ -68,8 +68,10 @@ const HeroSection = () => {
             className="hero-in text-base sm:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 max-w-[52ch]"
             style={{ opacity: 0, color: "rgba(226,232,240,0.65)" }}
           >
-            Senior Software Engineer at IFS with 6+ years of experience building
-            scalable full-stack applications. Based in San Francisco, CA.
+            Senior Software Engineer at IFS with 6+ years building full-stack
+            systems in Java, Spring Boot, and Angular — specializing in
+            multi-tenant platforms, B2B integrations, and business-rule engines
+            that power real enterprise workflows. Based in San Francisco, CA.
           </p>
 
           {/* CTAs — stack on very small screens */}

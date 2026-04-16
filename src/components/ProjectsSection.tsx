@@ -15,28 +15,36 @@ const projects: Array<{
   sound: SoundName;
 }> = [
   {
-    title: "Scalable Data Pipeline",
+    title: "Multi-Step Order Workflow (Angular)",
     description:
-      "Designed and implemented a high-throughput data pipeline processing millions of events in real-time with fault tolerance and low latency.",
-    tags: ["Python", "Kafka", "Redis"],
+      "Angular reactive form engine for complex order entry — live address validation, strict IPv4 / email / phone rules, programmatic mat-tab navigation driven by field validity, and session-based form restoration after browser refreshes.",
+    tags: ["Angular", "Reactive Forms", "TypeScript", "Material"],
     accent: "#F5B820",
     sound: "projectA",
   },
   {
-    title: "Microservices Architecture",
+    title: "API Integration Layer",
     description:
-      "Built a robust microservices orchestration layer improving system availability and enabling independent service scaling.",
-    tags: ["Go", "Kubernetes", "gRPC"],
+      "Java / Spring Boot service that maps external payloads into a clean internal domain model. Strongly-typed POJOs, disciplined serialization boundaries, and defensive server-side validation for every downstream field.",
+    tags: ["Java", "Spring Boot", "REST", "Hibernate"],
     accent: "#6366f1",
     sound: "projectB",
   },
   {
-    title: "API Gateway & Platform",
+    title: "SLA Reporting & Analytics Engine",
     description:
-      "Developed a centralized API gateway handling authentication, rate limiting, and request routing for distributed backend services.",
-    tags: ["Node.js", "PostgreSQL", "Docker"],
+      "Time-based business-rules engine that computes SLA compliance against business hours, weekends, and federal holidays — with per-tenant overrides. Surfaces response-time metrics and breach alerts to operations dashboards.",
+    tags: ["Java", "SQL", "Business Rules", "Reporting"],
     accent: "#22d3ee",
     sound: "projectC",
+  },
+  {
+    title: "Multi-Tenant Business Logic System",
+    description:
+      "Shared Java service layer that dispatches tenant-specific validation, pricing, and routing rules through a single shared workflow — keeping the core code path clean while isolating per-tenant divergence behind a well-defined strategy interface.",
+    tags: ["Java", "Multi-tenant", "Microservices", "SaaS"],
+    accent: "#f97316",
+    sound: "projectD",
   },
 ];
 
@@ -92,7 +100,7 @@ const ProjectsSection = () => {
           className="proj-header text-xs font-semibold tracking-[0.25em] uppercase mb-3"
           style={{ opacity: 0, color: "#F5B820" }}
         >
-          003 — Projects
+          004 — Projects
         </p>
         <h2
           className="proj-header font-bold mb-16"
@@ -107,7 +115,7 @@ const ProjectsSection = () => {
           <span style={{ color: "#22d3ee" }}>built.</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project) => (
             <div
               key={project.title}

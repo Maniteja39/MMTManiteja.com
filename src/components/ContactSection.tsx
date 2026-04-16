@@ -45,7 +45,7 @@ const ContactSection = () => {
             className="contact-in text-xs font-semibold tracking-[0.25em] uppercase mb-4"
             style={{ opacity: 0, color: "#F5B820" }}
           >
-            004 — Contact
+            005 — Contact
           </p>
 
           <h2
