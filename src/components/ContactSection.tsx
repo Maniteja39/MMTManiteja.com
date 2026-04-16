@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, Linkedin, ArrowRight } from "lucide-react";
+import { Mail, Linkedin, ArrowRight, Download } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -104,6 +104,21 @@ const ContactSection = () => {
             >
               <Mail className="w-5 h-5" />
               Send an Email
+            </a>
+
+            <a
+              href="/Maniteja_Manchikalapudi_Resume.pdf"
+              download
+              className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105"
+              style={{
+                background: "rgba(99,102,241,0.1)",
+                color: "#e2e8f0",
+                border: "1px solid rgba(99,102,241,0.25)",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <Download className="w-5 h-5" />
+              Download Resume
             </a>
           </div>
         </div>

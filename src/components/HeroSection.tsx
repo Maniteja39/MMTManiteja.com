@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { Download } from "lucide-react";
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,6 +97,20 @@ const HeroSection = () => {
               }}
             >
               View Experience
+            </a>
+            <a
+              href="/Maniteja_Manchikalapudi_Resume.pdf"
+              download
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 font-semibold rounded-md transition-all duration-300 hover:scale-105 text-center text-sm sm:text-base"
+              style={{
+                background: "rgba(99,102,241,0.1)",
+                color: "#e2e8f0",
+                border: "1px solid rgba(99,102,241,0.25)",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <Download className="w-4 h-4" />
+              Resume
             </a>
           </div>
         </div>
