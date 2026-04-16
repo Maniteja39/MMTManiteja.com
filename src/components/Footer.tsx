@@ -32,7 +32,7 @@ const Footer = () => {
           </a>
         </div>
         <p className="text-xs" style={{ color: "rgba(226,232,240,0.25)" }}>
-          &copy; {new Date().getFullYear()} Maniteja M. All rights reserved.
+          &copy; {new Date().getFullYear()} Maniteja Manchikalapudi. All rights reserved.
         </p>
       </div>
     </footer>

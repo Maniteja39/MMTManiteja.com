@@ -63,6 +63,10 @@ const AboutSection = () => {
             boxShadow: "0 0 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)",
           }}
         >
+          {/* Full name — visible to Google and screen readers */}
+          <p className="text-sm font-medium mb-2" style={{ color: "rgba(226,232,240,0.45)" }}>
+            Maniteja Manchikalapudi
+          </p>
           <h2
             className="font-bold mb-10"
             style={{
