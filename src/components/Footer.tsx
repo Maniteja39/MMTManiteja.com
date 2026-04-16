@@ -8,7 +8,7 @@ const Footer = () => {
         backdropFilter: "blur(10px)",
       }}
     >
-      <div className="container mx-auto px-8">
+      <div className="container mx-auto px-5 sm:px-8">
         <div className="flex justify-center gap-8 mb-4">
           <a
             href="https://www.linkedin.com/in/maniteja-m-6987a71b9/"

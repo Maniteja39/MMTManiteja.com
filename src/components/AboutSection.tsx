@@ -41,8 +41,8 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" className="relative min-h-screen flex items-center py-32">
-      <div className="container mx-auto px-8 lg:px-16">
+    <section ref={sectionRef} id="about" className="relative min-h-screen flex items-center py-20 sm:py-32">
+      <div className="container mx-auto px-5 sm:px-8 lg:px-16">
         {/* Section label */}
         <p
           className="about-in text-xs font-semibold tracking-[0.25em] uppercase mb-4"
@@ -53,7 +53,7 @@ const AboutSection = () => {
 
         {/* Glass panel */}
         <div
-          className="about-in rounded-2xl p-8 lg:p-12"
+          className="about-in rounded-2xl p-5 sm:p-8 lg:p-12"
           style={{
             opacity: 0,
             background: "rgba(4,4,11,0.72)",
@@ -79,8 +79,8 @@ const AboutSection = () => {
             <span style={{ color: "#F5B820" }}>scale.</span>
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="space-y-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start">
+            <div className="space-y-4 sm:space-y-5">
               <p className="text-base lg:text-lg leading-relaxed" style={{ color: "rgba(226,232,240,0.7)" }}>
                 As a Senior Software Engineer at IFS, I bring 6+ years of experience
                 designing and building full-stack web applications. From Java and

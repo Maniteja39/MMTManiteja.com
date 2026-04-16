@@ -68,8 +68,8 @@ const ProjectsSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" className="relative min-h-screen py-32 flex items-center">
-      <div className="container mx-auto px-8 lg:px-16">
+    <section ref={sectionRef} id="projects" className="relative min-h-screen py-20 sm:py-32 flex items-center">
+      <div className="container mx-auto px-5 sm:px-8 lg:px-16">
         <p
           className="proj-header text-xs font-semibold tracking-[0.25em] uppercase mb-3"
           style={{ opacity: 0, color: "#F5B820" }}
