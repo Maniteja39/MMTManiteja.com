@@ -12,7 +12,14 @@ const experiences = [
     type: "Full-time",
     period: "Feb 2026 - Present · 3 mos",
     location: "San Francisco Bay Area · On-site",
-    description: [],
+    description: [
+      "Building backend systems for IFS Loops — the company's enterprise-grade Agentic AI platform that deploys autonomous Digital Workers to automate high-volume industrial operations across manufacturing, energy, utilities, and field service sectors.",
+      "Engineering distributed microservices that orchestrate AI agent lifecycles — dynamically spawning, routing, and scaling Digital Workers that handle real-time tasks such as field dispatch, supplier coordination, customer order management, and inventory replenishment.",
+      "Designing and optimizing event-driven data pipelines using Kafka capable of processing billions of messages per day with low latency and fault-tolerant reliability across enterprise systems.",
+      "Implementing gRPC-based service communication layers and Protobuf message schemas to ensure high-throughput, low-overhead inter-service contracts across the agentic platform.",
+      "Integrating observability tooling (Prometheus, Grafana, OpenTelemetry) to provide end-to-end tracing, metrics, and audit-ready compliance for mission-critical agent workflows.",
+      "Collaborating with infrastructure and SRE teams to design self-healing, auto-scaling platform components that degrade gracefully under unpredictable industrial workloads.",
+    ],
   },
   {
     title: "Full-stack Developer",
