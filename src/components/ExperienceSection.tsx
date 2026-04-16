@@ -1,5 +1,9 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Briefcase } from "lucide-react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const experiences = [
   {
@@ -85,49 +89,141 @@ const experiences = [
 ];
 
 const ExperienceSection = () => {
-  const sectionRef = useScrollAnimation<HTMLElement>();
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const ctx = gsap.context(() => {
+      // Header fades in first
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current.children,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+      // Cards cascade in
+      if (cardsRef.current) {
+        const cards = cardsRef.current.querySelectorAll(".exp-card");
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 35, x: -20 },
+          {
+            opacity: 1,
+            y: 0,
+            x: 0,
+            duration: 0.7,
+            stagger: 0.09,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, el);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section ref={sectionRef} id="experience" className="py-32">
-      <div className="container mx-auto px-8">
-        <h2
-          className="animate-child text-4xl lg:text-5xl font-bold mb-16 text-center text-foreground"
-          style={{ opacity: 0 }}
-        >
-          Experience
-        </h2>
-        <div className="max-w-3xl mx-auto space-y-6">
+    <section ref={sectionRef} id="experience" className="relative py-32">
+      <div className="container mx-auto px-8 lg:px-16">
+        {/* Header */}
+        <div ref={headerRef} className="mb-14">
+          <p
+            className="text-xs font-semibold tracking-[0.25em] uppercase mb-3"
+            style={{ opacity: 0, color: "#F5B820" }}
+          >
+            002 — Experience
+          </p>
+          <h2
+            className="font-bold"
+            style={{
+              opacity: 0,
+              fontSize: "clamp(2rem, 4vw, 3.5rem)",
+              color: "#e2e8f0",
+              lineHeight: 1.1,
+            }}
+          >
+            Where I've{" "}
+            <span style={{ color: "#6366f1" }}>shipped.</span>
+          </h2>
+        </div>
+
+        {/* Cards */}
+        <div ref={cardsRef} className="max-w-3xl space-y-4">
           {experiences.map((exp, i) => (
             <div
               key={i}
-              className="animate-child p-6 rounded-lg bg-card border border-border hover:border-accent/30 transition-colors duration-200"
-              style={{ opacity: 0 }}
+              className="exp-card p-6 rounded-xl transition-all duration-300 hover:scale-[1.01]"
+              style={{
+                opacity: 0,
+                background: "rgba(4,4,11,0.68)",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                boxShadow: "0 0 40px rgba(0,0,0,0.3)",
+              }}
             >
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-md bg-secondary shrink-0">
-                  <Briefcase className="w-5 h-5 text-accent" />
+                <div
+                  className="p-3 rounded-lg shrink-0"
+                  style={{ background: "rgba(245,184,32,0.1)", border: "1px solid rgba(245,184,32,0.2)" }}
+                >
+                  <Briefcase className="w-4 h-4" style={{ color: "#F5B820" }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <h3 className="text-xl font-semibold text-foreground">
+                  <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
+                    <h3 className="text-base font-semibold" style={{ color: "#e2e8f0" }}>
                       {exp.title}
                     </h3>
-                    <span className="text-xs text-muted-foreground bg-secondary px-2 py-1 rounded">
+                    <span
+                      className="text-xs font-medium px-2.5 py-1 rounded-full"
+                      style={{
+                        background: "rgba(99,102,241,0.15)",
+                        color: "#818cf8",
+                        border: "1px solid rgba(99,102,241,0.25)",
+                      }}
+                    >
                       {exp.type}
                     </span>
                   </div>
-                  <p className="text-accent font-medium mt-1">{exp.company}</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {exp.period}
-                    {exp.location && ` · ${exp.location}`}
+                  <p className="text-sm font-medium mb-1" style={{ color: "#F5B820" }}>
+                    {exp.company}
+                  </p>
+                  <p className="text-xs mb-3" style={{ color: "rgba(226,232,240,0.4)" }}>
+                    {exp.period}{exp.location && ` · ${exp.location}`}
                   </p>
                   {exp.description.length > 0 && (
-                    <ul className="mt-3 space-y-2">
+                    <ul className="space-y-2">
                       {exp.description.map((item, j) => (
                         <li
                           key={j}
-                          className="text-muted-foreground text-sm leading-relaxed pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-accent/50"
+                          className="text-sm leading-relaxed pl-4 relative"
+                          style={{
+                            color: "rgba(226,232,240,0.6)",
+                          }}
                         >
+                          <span
+                            className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full"
+                            style={{ background: "rgba(245,184,32,0.5)" }}
+                          />
                           {item}
                         </li>
                       ))}
