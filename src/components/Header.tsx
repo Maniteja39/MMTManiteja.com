@@ -1,13 +1,31 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Linkedin, Menu, X, Volume2, VolumeX } from "lucide-react";
 import { useSound } from "@/lib/sound/SoundProvider";
 
-const NAV_ITEMS = ["About", "Skills", "Experience", "Projects", "Contact"];
+// Section anchors live on "/". Routes are full paths. The "to" field is what we
+// render as; on the landing page section links use `#about` directly, elsewhere
+// they prefix with `/` so the browser navigates home first.
+const NAV_ITEMS: Array<{ label: string; kind: "section" | "route"; target: string }> = [
+  { label: "About", kind: "section", target: "about" },
+  { label: "Skills", kind: "section", target: "skills" },
+  { label: "Experience", kind: "section", target: "experience" },
+  { label: "Projects", kind: "section", target: "projects" },
+  { label: "Writings", kind: "route", target: "/writings" },
+  { label: "Contact", kind: "section", target: "contact" },
+];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { play, muted, toggleMute } = useSound();
+  const location = useLocation();
+  const onHome = location.pathname === "/";
+
+  // Build the href for a section-style nav item. On the landing page we use
+  // the native anchor hash so the browser scrolls; elsewhere we prefix with "/"
+  // so react-router navigates home, then the hash resolves.
+  const sectionHref = (target: string) => (onHome ? `#${target}` : `/#${target}`);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,36 +63,40 @@ const Header = () => {
         }}
       >
         <div className="container mx-auto px-5 sm:px-8 lg:px-16 py-4 sm:py-6 flex justify-between items-center">
-          {/* Logo */}
-          <a
-            href="#"
+          {/* Logo — routes home */}
+          <Link
+            to="/"
             className="text-base font-semibold tracking-wide"
             style={{ color: "#e2e8f0" }}
             onClick={() => setMenuOpen(false)}
           >
             Maniteja<span style={{ color: "#F5B820" }}>.</span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex gap-8 items-center">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-sm font-medium transition-colors duration-200"
-                style={{ color: "rgba(226,232,240,0.55)" }}
-                onMouseEnter={(e) => {
+            {NAV_ITEMS.map((item) => {
+              const commonProps = {
+                className: "text-sm font-medium transition-colors duration-200",
+                style: { color: "rgba(226,232,240,0.55)" },
+                onMouseEnter: (e: React.MouseEvent<HTMLAnchorElement>) => {
                   e.currentTarget.style.color = "#F5B820";
                   play("hover");
-                }}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "rgba(226,232,240,0.55)")
-                }
-                onClick={() => play("whoosh")}
-              >
-                {item}
-              </a>
-            ))}
+                },
+                onMouseLeave: (e: React.MouseEvent<HTMLAnchorElement>) =>
+                  (e.currentTarget.style.color = "rgba(226,232,240,0.55)"),
+                onClick: () => play("whoosh"),
+              };
+              return item.kind === "route" ? (
+                <Link key={item.label} to={item.target} {...commonProps}>
+                  {item.label}
+                </Link>
+              ) : (
+                <a key={item.label} href={sectionHref(item.target)} {...commonProps}>
+                  {item.label}
+                </a>
+              );
+            })}
             <a
               href="https://www.linkedin.com/in/maniteja-m-6987a71b9/"
               target="_blank"
@@ -159,31 +181,50 @@ const Header = () => {
 
         {/* Nav links — centered vertically */}
         <nav className="flex flex-col items-center justify-center flex-1 gap-7 px-8">
-          {NAV_ITEMS.map((item, i) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-2xl font-semibold tracking-wide"
-              style={{
-                color: "rgba(226,232,240,0.85)",
-                transition: `color 0.2s, transform 0.4s ease ${i * 70}ms, opacity 0.4s ease ${i * 70}ms`,
-                transform: menuOpen ? "translateY(0)" : "translateY(16px)",
-                opacity: menuOpen ? 1 : 0,
-              }}
-              onClick={() => {
-                play("whoosh");
-                setMenuOpen(false);
-              }}
-            >
-              <span
-                className="text-xs font-normal tracking-[0.2em] block mb-1"
-                style={{ color: "rgba(245,184,32,0.5)" }}
+          {NAV_ITEMS.map((item, i) => {
+            const linkStyle = {
+              color: "rgba(226,232,240,0.85)",
+              transition: `color 0.2s, transform 0.4s ease ${i * 70}ms, opacity 0.4s ease ${i * 70}ms`,
+              transform: menuOpen ? "translateY(0)" : "translateY(16px)",
+              opacity: menuOpen ? 1 : 0,
+            };
+            const onClickClose = () => {
+              play("whoosh");
+              setMenuOpen(false);
+            };
+            const inner = (
+              <>
+                <span
+                  className="text-xs font-normal tracking-[0.2em] block mb-1"
+                  style={{ color: "rgba(245,184,32,0.5)" }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                {item.label}
+              </>
+            );
+            return item.kind === "route" ? (
+              <Link
+                key={item.label}
+                to={item.target}
+                className="text-2xl font-semibold tracking-wide text-center"
+                style={linkStyle}
+                onClick={onClickClose}
               >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {item}
-            </a>
-          ))}
+                {inner}
+              </Link>
+            ) : (
+              <a
+                key={item.label}
+                href={sectionHref(item.target)}
+                className="text-2xl font-semibold tracking-wide text-center"
+                style={linkStyle}
+                onClick={onClickClose}
+              >
+                {inner}
+              </a>
+            );
+          })}
 
           {/* LinkedIn CTA */}
           <a
