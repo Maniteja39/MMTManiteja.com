@@ -26,6 +26,10 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
+      # SPA fallback: GitHub Pages serves 404.html for any path that doesn't
+      # map to a real file. Duplicating index.html there lets deep links like
+      # /admin/login load the app, which then lets React Router take over.
+      - run: cp dist/index.html dist/404.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
