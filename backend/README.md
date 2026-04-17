@@ -1,6 +1,6 @@
 # mmtmaniteja-api
 
-Spring Boot 3 + Postgres backend powering the writings/blog CMS and custom analytics on [mmtmaniteja.com](https://mmtmaniteja.com).
+Spring Boot 3 + Postgres backend powering the writings/blog CMS and custom analytics on [maniteja.com](https://maniteja.com).
 
 ## What's in here
 
@@ -90,13 +90,13 @@ Subsequent deploys happen automatically on every push to the default branch
 
 ### Custom domain
 
-Point `api.mmtmaniteja.com` at the Render service in Route 53:
+Point `api.maniteja.com` at the Render service in Route 53:
 
 ```
-api.mmtmaniteja.com  CNAME  <your-service>.onrender.com
+api.maniteja.com  CNAME  <your-service>.onrender.com
 ```
 
-Then in Render → Settings → Custom Domains, add `api.mmtmaniteja.com`. Render
+Then in Render → Settings → Custom Domains, add `api.maniteja.com`. Render
 provisions the TLS cert automatically.
 
 ## Env vars cheat sheet
@@ -108,7 +108,7 @@ provisions the TLS cert automatically.
 | `JWT_EXPIRY_SECONDS`   | no       | Default 86400 (1 day)                                     |
 | `ADMIN_USERNAME`       | yes\*    | Only required for first boot; seeds the admin user        |
 | `ADMIN_PASSWORD`       | yes\*    | Only required for first boot; plaintext here, bcrypted to DB |
-| `CORS_ALLOWED_ORIGINS` | no       | Comma-separated; defaults to mmtmaniteja.com + localhost  |
+| `CORS_ALLOWED_ORIGINS` | no       | Comma-separated; defaults to maniteja.com + localhost     |
 
 \* After the admin row exists, these can be cleared and the app still runs. To
 rotate the admin password, either clear the env vars and update the DB directly,

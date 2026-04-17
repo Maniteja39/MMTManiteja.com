@@ -17,7 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CorsConfig {
 
     /** Comma-separated list of allowed origins, configured via CORS_ALLOWED_ORIGINS env var. */
-    @Value("${app.cors.allowed-origins:https://mmtmaniteja.com,https://www.mmtmaniteja.com,http://localhost:5173,http://localhost:8080}")
+    @Value("${app.cors.allowed-origins:https://maniteja.com,https://www.maniteja.com,http://localhost:5173,http://localhost:8080}")
     private String allowedOrigins;
 
     @Bean

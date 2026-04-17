@@ -6,7 +6,7 @@
 #   JWT_SECRET          → generate with `openssl rand -base64 48`
 #   ADMIN_USERNAME      → e.g. "maniteja"
 #   ADMIN_PASSWORD      → strong, random; rotate by changing the env var + restart
-#   CORS_ALLOWED_ORIGINS (optional override — defaults already include mmtmaniteja.com)
+#   CORS_ALLOWED_ORIGINS (optional override — defaults already include maniteja.com)
 
 databases:
   - name: mmtmaniteja-db
@@ -36,6 +36,6 @@ services:
       - key: ADMIN_PASSWORD
         sync: false
       - key: CORS_ALLOWED_ORIGINS
-        value: https://mmtmaniteja.com,https://www.mmtmaniteja.com
+        value: https://maniteja.com,https://www.maniteja.com
       - key: JAVA_OPTS
         value: -XX:MaxRAMPercentage=70 -XX:+UseG1GC
