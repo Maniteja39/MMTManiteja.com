@@ -10,19 +10,24 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.mmtmaniteja.api.auth.JwtAuthFilter;
+import com.mmtmaniteja.api.common.RateLimitFilter;
 
 @Configuration
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final RateLimitFilter rateLimitFilter;
     private final UrlBasedCorsConfigurationSource corsConfigurationSource;
 
     public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+                          RateLimitFilter rateLimitFilter,
                           UrlBasedCorsConfigurationSource corsConfigurationSource) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.rateLimitFilter = rateLimitFilter;
         this.corsConfigurationSource = corsConfigurationSource;
     }
 
@@ -32,11 +37,39 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Defense-in-depth response headers. Most of these matter more when an API
+            // is consumed by a browser directly (e.g., an error page rendered by the
+            // browser, or someone framing our JSON endpoint). Cheap to set, never hurts.
+            .headers(h -> h
+                // HSTS — tell browsers to pin HTTPS for a year and include subdomains.
+                // Render already forces HTTPS, but the header protects against SSL-strip
+                // if the client arrives via a compromised intermediary.
+                .httpStrictTransportSecurity(hsts -> hsts
+                    .includeSubDomains(true)
+                    .maxAgeInSeconds(31_536_000L))
+                // Prevent any form of framing — defeats clickjacking of API responses
+                // or the admin login page if it were ever served via this host.
+                .frameOptions(frame -> frame.deny())
+                // X-Content-Type-Options: nosniff — browsers must not second-guess
+                // our Content-Type headers. Default in recent Spring, set explicitly.
+                .contentTypeOptions(cto -> {})
+                // Don't leak full URLs (including query strings) via the Referer header
+                // when users navigate from admin pages to third-party sites.
+                .referrerPolicy(rp -> rp.policy(
+                    ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                // Content-Security-Policy for API responses — we never expect inline
+                // scripts or external resources to load out of a JSON response, so lock
+                // it all down. The frontend site has its own CSP separately.
+                .contentSecurityPolicy(csp -> csp
+                    .policyDirectives("default-src 'none'; frame-ancestors 'none'; base-uri 'none'"))
+                // Turn off powerful browser features for anything served from this host.
+                .permissionsPolicy(pp -> pp
+                    .policy("camera=(), microphone=(), geolocation=(), payment=(), usb=()"))
+            )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(
                     "/actuator/health",
-                    "/actuator/info",
                     "/api/auth/login",
                     "/api/auth/me"
                 ).permitAll()
@@ -53,6 +86,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/posts/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
+            // Rate limiter runs first so abusive traffic is bounced before we spend
+            // cycles parsing JWTs or hitting the DB.
+            .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

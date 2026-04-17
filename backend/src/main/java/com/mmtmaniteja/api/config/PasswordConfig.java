@@ -12,8 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class PasswordConfig {
 
+    /**
+     * BCrypt with 12 rounds (~200ms per hash on typical hardware). The default is 10,
+     * which is no longer recommended; 12 is the current floor for new deployments.
+     * Increasing further past ~13 starts costing real request latency at login.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
 }

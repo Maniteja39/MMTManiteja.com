@@ -34,11 +34,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info
+        # Only /actuator/health is needed for Render's uptime probe. /info leaks
+        # build version + git commit to anonymous callers; we don't expose it.
+        include: health
   endpoint:
     health:
       probes:
         enabled: true
+      # Don't reveal component-level details (DB up/down, disk free, etc.) to
+      # unauthenticated callers — just OK / not OK.
+      show-details: never
 
 app:
   jwt:

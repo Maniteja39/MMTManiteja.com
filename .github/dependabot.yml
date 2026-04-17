@@ -1,0 +1,63 @@
+# Dependabot — auto-opens PRs for dependency updates, including security fixes.
+# Three ecosystems tracked here: npm (frontend), maven (backend), and github-actions
+# (the deploy workflow). Scheduled weekly to avoid PR noise.
+#
+# Review by: check the changelog in the PR body, run CI locally if anything
+# non-trivial, then merge. Security updates (CVE-driven) are tagged with the
+# "security" label so they can be triaged separately.
+version: 2
+
+updates:
+  # ───────── Frontend (Vite / React) ─────────
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "frontend"
+    # Don't spam major version bumps — review those manually.
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # ───────── Backend (Spring Boot / Maven) ─────────
+  - package-ecosystem: "maven"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "backend"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # ───────── CI workflows ─────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(ci)"
+    labels:
+      - "dependencies"
+      - "ci"

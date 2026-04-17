@@ -37,6 +37,9 @@ public class AdminBootstrap {
         this.adminPassword = adminPassword;
     }
 
+    /** Minimum acceptable length for the seeded admin password. */
+    private static final int MIN_PASSWORD_LENGTH = 12;
+
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void seed() {
@@ -46,6 +49,15 @@ public class AdminBootstrap {
         }
         if (users.findByUsername(adminUsername).isPresent()) {
             log.info("Admin user '{}' already exists — leaving password untouched.", adminUsername);
+            return;
+        }
+        // Fail loudly rather than silently seeding a guessable password. Rotate
+        // ADMIN_PASSWORD to something ≥ 12 chars (mix of classes preferred) and
+        // restart to continue.
+        if (adminPassword.length() < MIN_PASSWORD_LENGTH) {
+            log.error("ADMIN_PASSWORD is shorter than {} characters — refusing to seed admin user. "
+                    + "Generate a strong password (e.g. `openssl rand -base64 24`) and restart.",
+                    MIN_PASSWORD_LENGTH);
             return;
         }
         User u = new User();

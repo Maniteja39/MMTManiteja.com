@@ -61,7 +61,9 @@ public final class PostDtos {
 
         @NotBlank @Size(max = 240) String title,
         @Size(max = 500) String excerpt,
-        @NotBlank String contentMd,
+        // Cap at ~200KB of markdown — several novels worth of blog post, small
+        // enough that a malicious client can't balloon the DB with one POST.
+        @NotBlank @Size(max = 200_000) String contentMd,
         @Size(max = 300) String tags,
 
         @Pattern(regexp = "^(DRAFT|PUBLISHED)$", message = "status must be DRAFT or PUBLISHED")
