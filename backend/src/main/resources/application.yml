@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: mmtmaniteja-api
+
+  datasource:
+    # Render injects DATABASE_URL in the form postgres://USER:PASS@HOST:PORT/DB
+    # The entrypoint script in the Dockerfile converts it to the jdbc: form.
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/mmtmaniteja}
+    username: ${DATABASE_USERNAME:mmtmaniteja}
+    password: ${DATABASE_PASSWORD:mmtmaniteja}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # schema is owned by Flyway
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework  # honor X-Forwarded-* when behind Render's proxy
+  compression:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  jwt:
+    # REQUIRED in prod. Minimum 32 bytes. Generate: openssl rand -base64 48
+    secret: ${JWT_SECRET:}
+    expiry-seconds: ${JWT_EXPIRY_SECONDS:86400}
+    issuer: mmtmaniteja-api
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:https://mmtmaniteja.com,https://www.mmtmaniteja.com,http://localhost:5173,http://localhost:8080}
+  admin:
+    # Seeded on first boot only; subsequent edits happen through the DB.
+    username: ${ADMIN_USERNAME:}
+    password: ${ADMIN_PASSWORD:}
+
+logging:
+  level:
+    root: INFO
+    com.mmtmaniteja: INFO
+    org.springframework.security: INFO
