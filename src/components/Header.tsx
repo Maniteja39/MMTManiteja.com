@@ -49,7 +49,8 @@ const Header = () => {
       <header
         style={{
           position: "fixed",
-          top: 0,
+          // Offset by the LiveClock strip (28px) so the two don't overlap.
+          top: 28,
           left: 0,
           right: 0,
           zIndex: 50,

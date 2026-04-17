@@ -15,6 +15,7 @@ import PostEditor from "./pages/admin/PostEditor.tsx";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { RequireAdmin } from "@/lib/auth/RequireAdmin";
 import { Analytics } from "@/lib/analytics/Analytics";
+import LiveClock from "@/components/LiveClock";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          {/* LiveClock hides itself on /admin/* — uses useLocation, so it must be
+              inside BrowserRouter. */}
+          <LiveClock />
           {/* Analytics listens to route changes — must be inside BrowserRouter. */}
           <Analytics>
             <Routes>
