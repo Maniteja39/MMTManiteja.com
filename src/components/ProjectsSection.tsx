@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight } from "lucide-react";
 import { useSound } from "@/lib/sound/SoundProvider";
 import type { SoundName } from "@/lib/sound/SoundEngine";
 
@@ -176,15 +175,6 @@ const ProjectsSection = () => {
                   </span>
                 ))}
               </div>
-
-              <a
-                href="#"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-200 group-hover:gap-3"
-                style={{ color: project.accent }}
-                onClick={() => play("click")}
-              >
-                Learn More <ArrowRight className="w-4 h-4" />
-              </a>
             </div>
           ))}
         </div>
