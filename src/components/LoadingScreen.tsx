@@ -46,7 +46,7 @@ const LoadingScreen = ({ onFinished, minDuration = 2200 }: LoadingScreenProps) =
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "#04040b",
+        background: "var(--page-bg)",
         transition: "opacity 0.6s ease, visibility 0.6s ease",
         opacity: exiting ? 0 : 1,
         visibility: exiting ? "hidden" : "visible",
@@ -105,7 +105,7 @@ const LoadingScreen = ({ onFinished, minDuration = 2200 }: LoadingScreenProps) =
         style={{
           width: 120,
           height: 2,
-          background: "rgba(255,255,255,0.08)",
+          background: "var(--surface-3)",
           borderRadius: 1,
           overflow: "hidden",
           marginBottom: 14,
@@ -115,10 +115,10 @@ const LoadingScreen = ({ onFinished, minDuration = 2200 }: LoadingScreenProps) =
           style={{
             width: `${progress}%`,
             height: "100%",
-            background: "linear-gradient(90deg, #F5B820, #f97316)",
+            background: "linear-gradient(90deg, var(--brand-gold), var(--brand-orange))",
             borderRadius: 1,
             transition: "width 0.15s ease",
-            boxShadow: "0 0 8px rgba(245,184,32,0.5)",
+            boxShadow: "0 0 8px color-mix(in srgb, var(--brand-gold) 50%, transparent)",
           }}
         />
       </div>
@@ -129,7 +129,7 @@ const LoadingScreen = ({ onFinished, minDuration = 2200 }: LoadingScreenProps) =
           fontFamily: "monospace",
           fontSize: 11,
           letterSpacing: "0.15em",
-          color: "rgba(226,232,240,0.35)",
+          color: "var(--text-faint)",
         }}
       >
         {progress}%

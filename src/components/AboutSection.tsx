@@ -46,7 +46,7 @@ const AboutSection = () => {
         {/* Section label */}
         <p
           className="about-in text-xs font-semibold tracking-[0.25em] uppercase mb-4"
-          style={{ opacity: 0, color: "#F5B820" }}
+          style={{ opacity: 0, color: "var(--brand-gold)" }}
         >
           001 — About
         </p>
@@ -56,38 +56,38 @@ const AboutSection = () => {
           className="about-in rounded-2xl p-5 sm:p-8 lg:p-12"
           style={{
             opacity: 0,
-            background: "rgba(4,4,11,0.72)",
+            background: "color-mix(in srgb, var(--page-bg) 72%, transparent)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            boxShadow: "0 0 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)",
+            border: "1px solid var(--border-medium)",
+            boxShadow: "0 0 60px rgba(0,0,0,0.18), inset 0 1px 0 var(--border-soft)",
           }}
         >
           {/* Full name — visible to Google and screen readers */}
-          <p className="text-sm font-medium mb-2" style={{ color: "rgba(226,232,240,0.45)" }}>
+          <p className="text-sm font-medium mb-2" style={{ color: "var(--text-soft)" }}>
             Maniteja Manchikalapudi
           </p>
           <h2
             className="font-bold mb-10"
             style={{
               fontSize: "clamp(2rem, 4vw, 3.5rem)",
-              color: "#e2e8f0",
+              color: "var(--text-strong)",
               lineHeight: 1.1,
             }}
           >
             Building things that{" "}
-            <span style={{ color: "#F5B820" }}>scale.</span>
+            <span style={{ color: "var(--brand-gold)" }}>scale.</span>
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start">
             <div className="space-y-4 sm:space-y-5">
-              <p className="text-base lg:text-lg leading-relaxed" style={{ color: "rgba(226,232,240,0.7)" }}>
+              <p className="text-base lg:text-lg leading-relaxed" style={{ color: "var(--text-body)" }}>
                 As a Senior Software Engineer at IFS, I bring 6+ years of experience
                 designing and building full-stack web applications — from Java and
                 Spring Boot backends to Angular reactive forms and dynamic UI
                 workflows on the frontend.
               </p>
-              <p className="text-base lg:text-lg leading-relaxed" style={{ color: "rgba(226,232,240,0.7)" }}>
+              <p className="text-base lg:text-lg leading-relaxed" style={{ color: "var(--text-body)" }}>
                 I've shipped multi-tenant platforms, API integration layers,
                 SLA reporting engines with complex business-hour and holiday
                 logic, and validation-heavy order workflows. Most of my work
@@ -96,12 +96,12 @@ const AboutSection = () => {
               </p>
               <div className="flex flex-wrap gap-5 pt-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" style={{ color: "#F5B820" }} />
-                  <span className="text-sm" style={{ color: "rgba(226,232,240,0.55)" }}>San Francisco, CA</span>
+                  <MapPin className="w-4 h-4" style={{ color: "var(--brand-gold)" }} />
+                  <span className="text-sm" style={{ color: "var(--text-soft)" }}>San Francisco, CA</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <GraduationCap className="w-4 h-4" style={{ color: "#F5B820" }} />
-                  <span className="text-sm" style={{ color: "rgba(226,232,240,0.55)" }}>University at Buffalo</span>
+                  <GraduationCap className="w-4 h-4" style={{ color: "var(--brand-gold)" }} />
+                  <span className="text-sm" style={{ color: "var(--text-soft)" }}>University at Buffalo</span>
                 </div>
               </div>
             </div>
@@ -112,13 +112,13 @@ const AboutSection = () => {
                   key={label}
                   className="flex items-center gap-3 p-4 rounded-xl transition-all duration-300 hover:scale-105"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    boxShadow: "0 0 20px rgba(0,0,0,0.2)",
+                    background: "var(--surface-1)",
+                    border: "1px solid var(--surface-3)",
+                    boxShadow: "0 0 20px rgba(0,0,0,0.08)",
                   }}
                 >
-                  <Icon className="w-5 h-5 shrink-0" style={{ color: "#F5B820" }} />
-                  <span className="text-sm font-medium" style={{ color: "#e2e8f0" }}>{label}</span>
+                  <Icon className="w-5 h-5 shrink-0" style={{ color: "var(--brand-gold)" }} />
+                  <span className="text-sm font-medium" style={{ color: "var(--text-strong)" }}>{label}</span>
                 </div>
               ))}
             </div>

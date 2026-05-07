@@ -43,7 +43,7 @@ const ContactSection = () => {
         <div className="max-w-2xl">
           <p
             className="contact-in text-xs font-semibold tracking-[0.25em] uppercase mb-4"
-            style={{ opacity: 0, color: "#F5B820" }}
+            style={{ opacity: 0, color: "var(--brand-gold)" }}
           >
             005 — Contact
           </p>
@@ -53,14 +53,14 @@ const ContactSection = () => {
             style={{
               opacity: 0,
               fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-              color: "#e2e8f0",
+              color: "var(--text-strong)",
               lineHeight: 1.05,
             }}
           >
             Let's build something{" "}
             <span
               style={{
-                background: "linear-gradient(135deg, #F5B820, #f97316)",
+                background: "linear-gradient(135deg, var(--brand-gold), var(--brand-orange))",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -72,7 +72,7 @@ const ContactSection = () => {
 
           <p
             className="contact-in text-base lg:text-lg leading-relaxed mb-10"
-            style={{ opacity: 0, color: "rgba(226,232,240,0.6)" }}
+            style={{ opacity: 0, color: "var(--text-muted)" }}
           >
             I'm always open to discussing new opportunities, collaborations, and
             innovative engineering challenges. Feel free to reach out.
@@ -86,9 +86,9 @@ const ContactSection = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 group"
               style={{
-                background: "linear-gradient(135deg, #F5B820, #f97316)",
-                color: "#04040b",
-                boxShadow: "0 0 35px rgba(245,184,32,0.3)",
+                background: "linear-gradient(135deg, var(--brand-gold), var(--brand-orange))",
+                color: "var(--on-brand-gold)",
+                boxShadow: "0 0 35px color-mix(in srgb, var(--brand-gold) 30%, transparent)",
               }}
               onMouseEnter={() => play("hover")}
               onClick={() => play("success")}
@@ -102,9 +102,9 @@ const ContactSection = () => {
               href="mailto:manitejajavadev@gmail.com"
               className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105"
               style={{
-                background: "rgba(255,255,255,0.05)",
-                color: "#e2e8f0",
-                border: "1px solid rgba(255,255,255,0.1)",
+                background: "var(--surface-1)",
+                color: "var(--text-strong)",
+                border: "1px solid var(--surface-3)",
                 backdropFilter: "blur(8px)",
               }}
               onMouseEnter={() => play("hover")}
@@ -119,9 +119,9 @@ const ContactSection = () => {
               download
               className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105"
               style={{
-                background: "rgba(99,102,241,0.1)",
-                color: "#e2e8f0",
-                border: "1px solid rgba(99,102,241,0.25)",
+                background: "color-mix(in srgb, var(--brand-indigo) 10%, transparent)",
+                color: "var(--text-strong)",
+                border: "1px solid color-mix(in srgb, var(--brand-indigo) 25%, transparent)",
                 backdropFilter: "blur(8px)",
               }}
               onMouseEnter={() => play("hover")}

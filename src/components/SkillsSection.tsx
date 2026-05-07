@@ -149,7 +149,7 @@ const SkillsSection = () => {
       <div className="container mx-auto px-5 sm:px-8 lg:px-16">
         <p
           className="skills-header text-xs font-semibold tracking-[0.25em] uppercase mb-3"
-          style={{ opacity: 0, color: "#F5B820" }}
+          style={{ opacity: 0, color: "var(--brand-gold)" }}
         >
           002 — Tech Stack
         </p>
@@ -158,16 +158,16 @@ const SkillsSection = () => {
           style={{
             opacity: 0,
             fontSize: "clamp(2rem, 4vw, 3.5rem)",
-            color: "#e2e8f0",
+            color: "var(--text-strong)",
             lineHeight: 1.1,
           }}
         >
           Tools I{" "}
-          <span style={{ color: "#F5B820" }}>reach for.</span>
+          <span style={{ color: "var(--brand-gold)" }}>reach for.</span>
         </h2>
         <p
           className="skills-header text-base lg:text-lg leading-relaxed max-w-2xl mb-14"
-          style={{ opacity: 0, color: "rgba(226,232,240,0.6)" }}
+          style={{ opacity: 0, color: "var(--text-muted)" }}
         >
           A working toolkit built up over six years of shipping full-stack
           features — enterprise Java backends, Angular frontends, and the
@@ -181,24 +181,24 @@ const SkillsSection = () => {
               className="skills-card rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]"
               style={{
                 opacity: 0,
-                background: "rgba(4,4,11,0.72)",
+                background: "color-mix(in srgb, var(--page-bg) 72%, transparent)",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,0.07)",
-                boxShadow: `0 0 40px rgba(0,0,0,0.3)`,
+                border: "1px solid var(--border-medium)",
+                boxShadow: `0 0 40px rgba(0,0,0,0.18)`,
                 transition: "all 0.3s ease, box-shadow 0.3s ease",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLDivElement).style.boxShadow =
-                  `0 0 40px rgba(0,0,0,0.3), 0 0 25px ${accent}25`;
+                  `0 0 40px rgba(0,0,0,0.18), 0 0 25px ${accent}25`;
                 (e.currentTarget as HTMLDivElement).style.borderColor = `${accent}30`;
                 play("hover");
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLDivElement).style.boxShadow =
-                  "0 0 40px rgba(0,0,0,0.3)";
+                  "0 0 40px rgba(0,0,0,0.18)";
                 (e.currentTarget as HTMLDivElement).style.borderColor =
-                  "rgba(255,255,255,0.07)";
+                  "var(--border-medium)";
               }}
             >
               <div className="flex items-center gap-3 mb-5">
@@ -213,7 +213,7 @@ const SkillsSection = () => {
                 </div>
                 <h3
                   className="text-base font-semibold"
-                  style={{ color: "#e2e8f0" }}
+                  style={{ color: "var(--text-strong)" }}
                 >
                   {title}
                 </h3>
@@ -224,7 +224,7 @@ const SkillsSection = () => {
                   <li
                     key={item}
                     className="text-sm leading-relaxed pl-4 relative"
-                    style={{ color: "rgba(226,232,240,0.65)" }}
+                    style={{ color: "var(--text-muted)" }}
                   >
                     <span
                       className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full"

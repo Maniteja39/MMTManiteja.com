@@ -35,7 +35,7 @@ const HeroSection = () => {
           {/* Eyebrow */}
           <p
             className="hero-in text-xs sm:text-sm font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase mb-4 sm:mb-6"
-            style={{ opacity: 0, color: "#F5B820" }}
+            style={{ opacity: 0, color: "var(--brand-gold)" }}
           >
             Senior Software Engineer
           </p>
@@ -46,14 +46,14 @@ const HeroSection = () => {
             style={{
               opacity: 0,
               fontSize: "clamp(2.6rem, 9vw, 8rem)",
-              color: "#e2e8f0",
+              color: "var(--text-strong)",
             }}
           >
             Hi, I'm{" "}
             <span
               style={{
                 background:
-                  "linear-gradient(135deg, #F5B820 0%, #f97316 50%, #6366f1 100%)",
+                  "linear-gradient(135deg, var(--brand-gold) 0%, var(--brand-orange) 50%, var(--brand-indigo) 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -66,7 +66,7 @@ const HeroSection = () => {
           {/* Sub-headline */}
           <p
             className="hero-in text-base sm:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 max-w-[52ch]"
-            style={{ opacity: 0, color: "rgba(226,232,240,0.65)" }}
+            style={{ opacity: 0, color: "var(--text-body)" }}
           >
             Senior Software Engineer at IFS with 6+ years building full-stack
             systems in Java, Spring Boot, and Angular — specializing in
@@ -83,9 +83,9 @@ const HeroSection = () => {
               href="#contact"
               className="px-6 sm:px-8 py-3.5 sm:py-4 font-semibold rounded-md transition-all duration-300 hover:scale-105 text-center text-sm sm:text-base"
               style={{
-                background: "linear-gradient(135deg, #F5B820, #f97316)",
-                color: "#04040b",
-                boxShadow: "0 0 30px rgba(245,184,32,0.35)",
+                background: "linear-gradient(135deg, var(--brand-gold), var(--brand-orange))",
+                color: "var(--on-brand-gold)",
+                boxShadow: "0 0 30px color-mix(in srgb, var(--brand-gold) 35%, transparent)",
               }}
               onMouseEnter={() => play("hover")}
               onClick={() => play("clickPrimary")}
@@ -96,9 +96,9 @@ const HeroSection = () => {
               href="#experience"
               className="px-6 sm:px-8 py-3.5 sm:py-4 font-semibold rounded-md transition-all duration-300 hover:scale-105 text-center text-sm sm:text-base"
               style={{
-                background: "rgba(255,255,255,0.05)",
-                color: "#e2e8f0",
-                border: "1px solid rgba(255,255,255,0.12)",
+                background: "var(--surface-1)",
+                color: "var(--text-strong)",
+                border: "1px solid var(--surface-3)",
                 backdropFilter: "blur(8px)",
               }}
               onMouseEnter={() => play("hover")}
@@ -111,9 +111,9 @@ const HeroSection = () => {
               download
               className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 font-semibold rounded-md transition-all duration-300 hover:scale-105 text-center text-sm sm:text-base"
               style={{
-                background: "rgba(99,102,241,0.1)",
-                color: "#e2e8f0",
-                border: "1px solid rgba(99,102,241,0.25)",
+                background: "color-mix(in srgb, var(--brand-indigo) 10%, transparent)",
+                color: "var(--text-strong)",
+                border: "1px solid color-mix(in srgb, var(--brand-indigo) 25%, transparent)",
                 backdropFilter: "blur(8px)",
               }}
               onMouseEnter={() => play("hover")}
@@ -132,7 +132,7 @@ const HeroSection = () => {
         >
           <span
             className="text-xs tracking-widest uppercase"
-            style={{ color: "rgba(226,232,240,0.35)" }}
+            style={{ color: "var(--text-faint)" }}
           >
             Scroll
           </span>
@@ -140,7 +140,7 @@ const HeroSection = () => {
             className="w-px h-12"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(245,184,32,0.6), transparent)",
+                "linear-gradient(to bottom, color-mix(in srgb, var(--brand-gold) 60%, transparent), transparent)",
             }}
           />
         </div>

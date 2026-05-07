@@ -76,11 +76,11 @@ const LiveClock = () => {
         alignItems: "center",
         justifyContent: "center",
         gap: "0.75rem",
-        background: "rgba(4,4,11,0.78)",
+        background: "color-mix(in srgb, var(--page-bg) 78%, transparent)",
         backdropFilter: "blur(14px) saturate(140%)",
         WebkitBackdropFilter: "blur(14px) saturate(140%)",
-        borderBottom: "1px solid rgba(255,255,255,0.04)",
-        color: "rgba(226,232,240,0.55)",
+        borderBottom: "1px solid var(--border-soft)",
+        color: "var(--text-soft)",
         fontSize: "0.68rem",
         letterSpacing: "0.22em",
         fontFamily:
@@ -97,19 +97,19 @@ const LiveClock = () => {
           width: 6,
           height: 6,
           borderRadius: "50%",
-          background: "#F5B820",
-          boxShadow: "0 0 8px rgba(245,184,32,0.75)",
+          background: "var(--brand-gold)",
+          boxShadow: "0 0 8px color-mix(in srgb, var(--brand-gold) 75%, transparent)",
           animation: "mmt-clock-pulse 1.6s ease-in-out infinite",
         }}
       />
 
       {/* desktop: full strip */}
-      <span className="hidden sm:inline" style={{ color: "rgba(245,184,32,0.75)" }}>
+      <span className="hidden sm:inline" style={{ color: "color-mix(in srgb, var(--brand-gold) 75%, transparent)" }}>
         LIVE
       </span>
       <Divider className="hidden sm:inline" />
 
-      <span style={{ color: "#f1f5f9" }}>{timeStr}</span>
+      <span style={{ color: "var(--text-strong)" }}>{timeStr}</span>
 
       {tz.abbr && (
         <>

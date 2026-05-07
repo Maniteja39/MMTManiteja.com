@@ -157,6 +157,23 @@
     <!-- Preconnect for faster Google Fonts load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+
+    <!-- =====================================================
+         THEME INIT — runs before React mounts so the page
+         renders with the correct theme on first paint
+         (avoids flash of wrong theme on reload).
+    ====================================================== -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var theme = saved === "light" ? "light" : "dark";
+          document.documentElement.classList.add(theme);
+        } catch (_) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

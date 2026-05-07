@@ -158,7 +158,7 @@ const ExperienceSection = () => {
         <div ref={headerRef} className="mb-14">
           <p
             className="text-xs font-semibold tracking-[0.25em] uppercase mb-3"
-            style={{ opacity: 0, color: "#F5B820" }}
+            style={{ opacity: 0, color: "var(--brand-gold)" }}
           >
             003 — Experience
           </p>
@@ -167,12 +167,12 @@ const ExperienceSection = () => {
             style={{
               opacity: 0,
               fontSize: "clamp(2rem, 4vw, 3.5rem)",
-              color: "#e2e8f0",
+              color: "var(--text-strong)",
               lineHeight: 1.1,
             }}
           >
             Where I've{" "}
-            <span style={{ color: "#6366f1" }}>shipped.</span>
+            <span style={{ color: "var(--brand-indigo)" }}>shipped.</span>
           </h2>
         </div>
 
@@ -184,40 +184,43 @@ const ExperienceSection = () => {
               className="exp-card p-6 rounded-xl transition-all duration-300 hover:scale-[1.01]"
               style={{
                 opacity: 0,
-                background: "rgba(4,4,11,0.68)",
+                background: "color-mix(in srgb, var(--page-bg) 68%, transparent)",
                 backdropFilter: "blur(16px)",
                 WebkitBackdropFilter: "blur(16px)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                boxShadow: "0 0 40px rgba(0,0,0,0.3)",
+                border: "1px solid var(--border-medium)",
+                boxShadow: "0 0 40px rgba(0,0,0,0.18)",
               }}
             >
               <div className="flex items-start gap-4">
                 <div
                   className="p-3 rounded-lg shrink-0"
-                  style={{ background: "rgba(245,184,32,0.1)", border: "1px solid rgba(245,184,32,0.2)" }}
+                  style={{
+                    background: "color-mix(in srgb, var(--brand-gold) 10%, transparent)",
+                    border: "1px solid color-mix(in srgb, var(--brand-gold) 20%, transparent)",
+                  }}
                 >
-                  <Briefcase className="w-4 h-4" style={{ color: "#F5B820" }} />
+                  <Briefcase className="w-4 h-4" style={{ color: "var(--brand-gold)" }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
-                    <h3 className="text-base font-semibold" style={{ color: "#e2e8f0" }}>
+                    <h3 className="text-base font-semibold" style={{ color: "var(--text-strong)" }}>
                       {exp.title}
                     </h3>
                     <span
                       className="text-xs font-medium px-2.5 py-1 rounded-full"
                       style={{
-                        background: "rgba(99,102,241,0.15)",
-                        color: "#818cf8",
-                        border: "1px solid rgba(99,102,241,0.25)",
+                        background: "color-mix(in srgb, var(--brand-indigo) 15%, transparent)",
+                        color: "var(--brand-violet)",
+                        border: "1px solid color-mix(in srgb, var(--brand-indigo) 25%, transparent)",
                       }}
                     >
                       {exp.type}
                     </span>
                   </div>
-                  <p className="text-sm font-medium mb-1" style={{ color: "#F5B820" }}>
+                  <p className="text-sm font-medium mb-1" style={{ color: "var(--brand-gold)" }}>
                     {exp.company}
                   </p>
-                  <p className="text-xs mb-3" style={{ color: "rgba(226,232,240,0.4)" }}>
+                  <p className="text-xs mb-3" style={{ color: "var(--text-faint)" }}>
                     {exp.period}{exp.location && ` · ${exp.location}`}
                   </p>
                   {exp.description.length > 0 && (
@@ -227,12 +230,12 @@ const ExperienceSection = () => {
                           key={j}
                           className="text-sm leading-relaxed pl-4 relative"
                           style={{
-                            color: "rgba(226,232,240,0.6)",
+                            color: "var(--text-muted)",
                           }}
                         >
                           <span
                             className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full"
-                            style={{ background: "rgba(245,184,32,0.5)" }}
+                            style={{ background: "color-mix(in srgb, var(--brand-gold) 50%, transparent)" }}
                           />
                           {item}
                         </li>
