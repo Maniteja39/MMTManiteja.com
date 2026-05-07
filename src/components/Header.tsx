@@ -176,26 +176,49 @@ const Header = () => {
             </button>
           </nav>
 
-          {/* Mobile hamburger button */}
-          <button
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200"
-            style={{
-              color: menuOpen ? "var(--brand-gold)" : "var(--text-strong)",
-              background: "var(--surface-2)",
-              border: "1px solid var(--border-medium)",
-            }}
-            onClick={() => {
-              play(menuOpen ? "menuClose" : "menuOpen");
-              setMenuOpen((prev) => !prev);
-            }}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            {menuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
+          {/* Mobile actions — theme toggle + hamburger, always visible on small screens. */}
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => {
+                play("click");
+                toggleTheme();
+              }}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              aria-pressed={theme === "light"}
+              className="flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200"
+              style={{
+                color: "var(--brand-gold)",
+                background: "var(--surface-2)",
+                border: "1px solid var(--border-medium)",
+              }}
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+
+            <button
+              className="flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200"
+              style={{
+                color: menuOpen ? "var(--brand-gold)" : "var(--text-strong)",
+                background: "var(--surface-2)",
+                border: "1px solid var(--border-medium)",
+              }}
+              onClick={() => {
+                play(menuOpen ? "menuClose" : "menuOpen");
+                setMenuOpen((prev) => !prev);
+              }}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              {menuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </button>
+          </div>
         </div>
       </header>
 

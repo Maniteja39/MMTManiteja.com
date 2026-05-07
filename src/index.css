@@ -222,4 +222,44 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* ============================================================
+     mmt-prose — theme-aware overrides for the @tailwindcss/typography
+     plugin. We re-point the plugin's internal CSS vars at our brand
+     tokens so blog posts stay readable in both modes.
+  ============================================================ */
+  .mmt-prose {
+    --tw-prose-body: var(--text-body);
+    --tw-prose-headings: var(--text-strong);
+    --tw-prose-lead: var(--text-body);
+    --tw-prose-links: var(--brand-gold);
+    --tw-prose-bold: var(--text-strong);
+    --tw-prose-counters: var(--text-soft);
+    --tw-prose-bullets: var(--text-soft);
+    --tw-prose-hr: var(--border-medium);
+    --tw-prose-quotes: var(--text-strong);
+    --tw-prose-quote-borders: var(--brand-gold);
+    --tw-prose-captions: var(--text-muted);
+    --tw-prose-code: var(--brand-gold);
+    --tw-prose-pre-code: var(--text-strong);
+    --tw-prose-pre-bg: var(--surface-1);
+    --tw-prose-th-borders: var(--border-medium);
+    --tw-prose-td-borders: var(--border-soft);
+  }
+  .mmt-prose a:hover {
+    text-decoration: underline;
+  }
+  .mmt-prose code {
+    background: var(--surface-1);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.4rem;
+    font-size: 0.9em;
+  }
+  .mmt-prose code::before,
+  .mmt-prose code::after {
+    content: "";
+  }
+  .mmt-prose pre {
+    border: 1px solid var(--border-medium);
+  }
 }
