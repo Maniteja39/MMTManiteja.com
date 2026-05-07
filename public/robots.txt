@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 
 # Sitemap location — tells Google and Bing where to find all pages
 Sitemap: https://maniteja.com/sitemap.xml
