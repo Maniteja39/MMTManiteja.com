@@ -3,8 +3,8 @@ const Footer = () => {
     <footer
       className="relative py-12 text-center"
       style={{
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-        background: "rgba(4,4,11,0.5)",
+        borderTop: "1px solid var(--border-soft)",
+        background: "var(--footer-bg)",
         backdropFilter: "blur(10px)",
       }}
     >
@@ -15,25 +15,25 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm transition-colors duration-200"
-            style={{ color: "rgba(226,232,240,0.4)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B820")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(226,232,240,0.4)")}
+            style={{ color: "var(--text-faint)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--brand-gold)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-faint)")}
           >
             LinkedIn
           </a>
-                    <a
-                      href="https://github.com/Maniteja39"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm transition-colors duration-200"
-                      style={{ color: "rgba(226,232,240,0.4)" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B820")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(226,232,240,0.4)")}
-                    >
-                      GitHub
-                    </a>
+          <a
+            href="https://github.com/Maniteja39"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm transition-colors duration-200"
+            style={{ color: "var(--text-faint)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--brand-gold)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-faint)")}
+          >
+            GitHub
+          </a>
         </div>
-        <p className="text-xs" style={{ color: "rgba(226,232,240,0.25)" }}>
+        <p className="text-xs" style={{ color: "var(--text-very-faint)" }}>
           &copy; {new Date().getFullYear()} Maniteja Manchikalapudi. All rights reserved.
         </p>
       </div>

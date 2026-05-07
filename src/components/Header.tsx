@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Linkedin, Menu, X, Volume2, VolumeX } from "lucide-react";
+import { Linkedin, Menu, X, Volume2, VolumeX, Sun, Moon } from "lucide-react";
 import { useSound } from "@/lib/sound/SoundProvider";
+import { useTheme } from "@/lib/theme/ThemeContext";
 
 // Section anchors live on "/". Routes are full paths. The "to" field is what we
 // render as; on the landing page section links use `#about` directly, elsewhere
@@ -19,6 +20,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { play, muted, toggleMute } = useSound();
+  const { theme, toggle: toggleTheme } = useTheme();
   const location = useLocation();
   const onHome = location.pathname === "/";
 
@@ -55,11 +57,11 @@ const Header = () => {
           right: 0,
           zIndex: 50,
           transition: "all 0.4s ease",
-          background: scrolled || menuOpen ? "rgba(4,4,11,0.92)" : "transparent",
+          background: scrolled || menuOpen ? "var(--header-bg-scrolled)" : "transparent",
           backdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
           WebkitBackdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
           borderBottom: scrolled
-            ? "1px solid rgba(255,255,255,0.06)"
+            ? "1px solid var(--border-soft)"
             : "1px solid transparent",
         }}
       >
@@ -68,10 +70,10 @@ const Header = () => {
           <Link
             to="/"
             className="text-base font-semibold tracking-wide"
-            style={{ color: "#e2e8f0" }}
+            style={{ color: "var(--text-strong)" }}
             onClick={() => setMenuOpen(false)}
           >
-            Maniteja<span style={{ color: "#F5B820" }}>.</span>
+            Maniteja<span style={{ color: "var(--brand-gold)" }}>.</span>
           </Link>
 
           {/* Desktop nav */}
@@ -79,13 +81,13 @@ const Header = () => {
             {NAV_ITEMS.map((item) => {
               const commonProps = {
                 className: "text-sm font-medium transition-colors duration-200",
-                style: { color: "rgba(226,232,240,0.55)" },
+                style: { color: "var(--text-soft)" },
                 onMouseEnter: (e: React.MouseEvent<HTMLAnchorElement>) => {
-                  e.currentTarget.style.color = "#F5B820";
+                  e.currentTarget.style.color = "var(--brand-gold)";
                   play("hover");
                 },
                 onMouseLeave: (e: React.MouseEvent<HTMLAnchorElement>) =>
-                  (e.currentTarget.style.color = "rgba(226,232,240,0.55)"),
+                  (e.currentTarget.style.color = "var(--text-soft)"),
                 onClick: () => play("whoosh"),
               };
               return item.kind === "route" ? (
@@ -103,13 +105,13 @@ const Header = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors duration-200"
-              style={{ color: "rgba(226,232,240,0.55)" }}
+              style={{ color: "var(--text-soft)" }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#F5B820";
+                e.currentTarget.style.color = "var(--brand-gold)";
                 play("hover");
               }}
               onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "rgba(226,232,240,0.55)")
+                (e.currentTarget.style.color = "var(--text-soft)")
               }
               onClick={() => play("click")}
             >
@@ -123,7 +125,7 @@ const Header = () => {
               aria-pressed={!muted}
               className="transition-colors duration-200"
               style={{
-                color: muted ? "rgba(226,232,240,0.35)" : "#F5B820",
+                color: muted ? "var(--text-very-faint)" : "var(--brand-gold)",
                 background: "transparent",
                 border: "none",
                 padding: 0,
@@ -131,13 +133,46 @@ const Header = () => {
                 alignItems: "center",
               }}
               onMouseEnter={(e) => {
-                if (muted) e.currentTarget.style.color = "#F5B820";
+                if (muted) e.currentTarget.style.color = "var(--brand-gold)";
               }}
               onMouseLeave={(e) => {
-                if (muted) e.currentTarget.style.color = "rgba(226,232,240,0.35)";
+                if (muted) e.currentTarget.style.color = "var(--text-very-faint)";
               }}
             >
               {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </button>
+
+            {/* Theme toggle — Sun for "click to go light", Moon for "click to go dark". */}
+            <button
+              onClick={() => {
+                play("click");
+                toggleTheme();
+              }}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              aria-pressed={theme === "light"}
+              className="transition-colors duration-200"
+              style={{
+                color: "var(--brand-gold)",
+                background: "transparent",
+                border: "none",
+                padding: 0,
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "var(--text-strong)";
+                play("hover");
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "var(--brand-gold)";
+              }}
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
             </button>
           </nav>
 
@@ -145,9 +180,9 @@ const Header = () => {
           <button
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200"
             style={{
-              color: menuOpen ? "#F5B820" : "#e2e8f0",
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              color: menuOpen ? "var(--brand-gold)" : "var(--text-strong)",
+              background: "var(--surface-2)",
+              border: "1px solid var(--border-medium)",
             }}
             onClick={() => {
               play(menuOpen ? "menuClose" : "menuOpen");
@@ -168,7 +203,7 @@ const Header = () => {
       <div
         className="md:hidden fixed inset-0 z-40 flex flex-col"
         style={{
-          background: "rgba(4,4,11,0.97)",
+          background: "var(--mobile-overlay-bg)",
           backdropFilter: "blur(28px)",
           WebkitBackdropFilter: "blur(28px)",
           transition: "opacity 0.3s ease, visibility 0.3s ease",
@@ -184,7 +219,7 @@ const Header = () => {
         <nav className="flex flex-col items-center justify-center flex-1 gap-7 px-8">
           {NAV_ITEMS.map((item, i) => {
             const linkStyle = {
-              color: "rgba(226,232,240,0.85)",
+              color: "var(--text-strong)",
               transition: `color 0.2s, transform 0.4s ease ${i * 70}ms, opacity 0.4s ease ${i * 70}ms`,
               transform: menuOpen ? "translateY(0)" : "translateY(16px)",
               opacity: menuOpen ? 1 : 0,
@@ -197,7 +232,7 @@ const Header = () => {
               <>
                 <span
                   className="text-xs font-normal tracking-[0.2em] block mb-1"
-                  style={{ color: "rgba(245,184,32,0.5)" }}
+                  style={{ color: "var(--text-faint)" }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -234,9 +269,9 @@ const Header = () => {
             rel="noopener noreferrer"
             className="flex items-center gap-2 mt-6 px-6 py-3 rounded-xl font-semibold text-sm"
             style={{
-              background: "rgba(245,184,32,0.12)",
-              color: "#F5B820",
-              border: "1px solid rgba(245,184,32,0.25)",
+              background: "color-mix(in srgb, var(--brand-gold) 12%, transparent)",
+              color: "var(--brand-gold)",
+              border: "1px solid color-mix(in srgb, var(--brand-gold) 25%, transparent)",
               transition: `transform 0.4s ease ${NAV_ITEMS.length * 70}ms, opacity 0.4s ease ${NAV_ITEMS.length * 70}ms`,
               transform: menuOpen ? "translateY(0)" : "translateY(16px)",
               opacity: menuOpen ? 1 : 0,
@@ -254,7 +289,7 @@ const Header = () => {
         {/* Decorative accent line */}
         <div
           className="mx-auto mb-10 w-10 h-px"
-          style={{ background: "rgba(245,184,32,0.25)" }}
+          style={{ background: "color-mix(in srgb, var(--brand-gold) 25%, transparent)" }}
         />
       </div>
     </>

@@ -98,7 +98,7 @@ const ProjectsSection = () => {
       <div className="container mx-auto px-5 sm:px-8 lg:px-16">
         <p
           className="proj-header text-xs font-semibold tracking-[0.25em] uppercase mb-3"
-          style={{ opacity: 0, color: "#F5B820" }}
+          style={{ opacity: 0, color: "var(--brand-gold)" }}
         >
           004 — Projects
         </p>
@@ -107,12 +107,12 @@ const ProjectsSection = () => {
           style={{
             opacity: 0,
             fontSize: "clamp(2rem, 4vw, 3.5rem)",
-            color: "#e2e8f0",
+            color: "var(--text-strong)",
             lineHeight: 1.1,
           }}
         >
           What I've{" "}
-          <span style={{ color: "#22d3ee" }}>built.</span>
+          <span style={{ color: "var(--brand-cyan)" }}>built.</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,23 +122,23 @@ const ProjectsSection = () => {
               className="proj-card group relative flex flex-col rounded-2xl p-6 transition-all duration-400 hover:scale-[1.02]"
               style={{
                 opacity: 0,
-                background: "rgba(4,4,11,0.72)",
+                background: "color-mix(in srgb, var(--page-bg) 72%, transparent)",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,0.07)",
-                boxShadow: `0 0 50px rgba(0,0,0,0.35), 0 0 0 0px ${project.accent}22`,
+                border: "1px solid var(--border-medium)",
+                boxShadow: `0 0 50px rgba(0,0,0,0.2), 0 0 0 0px ${project.accent}22`,
                 transition: "all 0.35s ease, box-shadow 0.35s ease",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLDivElement).style.boxShadow =
-                  `0 0 50px rgba(0,0,0,0.35), 0 0 30px ${project.accent}30`;
+                  `0 0 50px rgba(0,0,0,0.2), 0 0 30px ${project.accent}30`;
                 (e.currentTarget as HTMLDivElement).style.borderColor = `${project.accent}30`;
                 play(project.sound);
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLDivElement).style.boxShadow =
-                  "0 0 50px rgba(0,0,0,0.35)";
-                (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.07)";
+                  "0 0 50px rgba(0,0,0,0.2)";
+                (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border-medium)";
               }}
             >
               {/* Color accent stripe */}
@@ -149,14 +149,14 @@ const ProjectsSection = () => {
 
               <h3
                 className="text-lg font-semibold mb-3"
-                style={{ color: "#e2e8f0" }}
+                style={{ color: "var(--text-strong)" }}
               >
                 {project.title}
               </h3>
 
               <p
                 className="text-sm leading-relaxed mb-5 flex-1"
-                style={{ color: "rgba(226,232,240,0.6)" }}
+                style={{ color: "var(--text-muted)" }}
               >
                 {project.description}
               </p>

@@ -4,8 +4,12 @@ import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import CameraRig from "./CameraRig";
 import ParticleField from "./ParticleField";
 import FloatingGeometry from "./FloatingGeometry";
+import { useTheme } from "@/lib/theme/ThemeContext";
 
 const Scene3D = () => {
+  const { theme } = useTheme();
+  const isLight = theme === "light";
+
   const isMobile = useMemo(
     () =>
       typeof window !== "undefined" &&
@@ -20,10 +24,20 @@ const Scene3D = () => {
         position: "fixed",
         inset: 0,
         zIndex: 0,
-        background: "#04040b",
+        background: "var(--page-bg)",
+        // Hide visually in light mode but keep the canvas mounted so toggling
+        // back to dark is instant (no shader recompile / texture reload).
+        opacity: isLight ? 0 : 1,
+        visibility: isLight ? "hidden" : "visible",
+        transition: "opacity 0.25s ease",
+        pointerEvents: isLight ? "none" : "auto",
       }}
+      aria-hidden={isLight}
     >
       <Canvas
+        // frameloop="never" stops r3f's render loop without unmounting WebGL.
+        // Saves GPU/battery in light mode while keeping the scene warm.
+        frameloop={isLight ? "never" : "always"}
         camera={{ position: [0, 0, 8], fov: isMobile ? 65 : 55 }}
         dpr={isMobile ? [1, 1] : [1, 1.5]}
         gl={{

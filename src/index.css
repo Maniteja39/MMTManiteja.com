@@ -46,6 +46,113 @@
     --sidebar-ring: 240 50% 55%;
 
     --font-sans: 'DM Sans', sans-serif;
+
+    /* ============================================================
+       Brand tokens — used directly in inline styles via var().
+       Dark mode (default) values below; the .light overrides
+       further down flip these for the paper look.
+    ============================================================ */
+    --page-bg: #04040b;
+    --text-strong: #e2e8f0;
+    --text-body: rgba(226, 232, 240, 0.7);
+    --text-muted: rgba(226, 232, 240, 0.6);
+    --text-soft: rgba(226, 232, 240, 0.45);
+    --text-faint: rgba(226, 232, 240, 0.4);
+    --text-very-faint: rgba(226, 232, 240, 0.25);
+
+    --brand-gold: #F5B820;
+    --brand-orange: #f97316;
+    --brand-indigo: #6366f1;
+    --brand-cyan: #22d3ee;
+    --brand-violet: #818cf8;
+    --on-brand-gold: #04040b;
+
+    --header-bg-scrolled: rgba(4, 4, 11, 0.92);
+    --mobile-overlay-bg: rgba(4, 4, 11, 0.97);
+    --footer-bg: rgba(4, 4, 11, 0.5);
+    --surface-1: rgba(255, 255, 255, 0.04);
+    --surface-2: rgba(255, 255, 255, 0.06);
+    --surface-3: rgba(255, 255, 255, 0.08);
+    --border-soft: rgba(255, 255, 255, 0.05);
+    --border-medium: rgba(255, 255, 255, 0.08);
+    --scrollbar-track: #04040b;
+
+    /* Paper grain only kicks in for light mode; dark = none. */
+    --paper-grain: none;
+  }
+
+  /* ============================================================
+     Light mode — minimalist paper aesthetic.
+     Warm off-white background, deep ink text, slightly
+     desaturated gold so the page reads less neon, and a
+     faint paper grain on the body.
+  ============================================================ */
+  :root.light {
+    --background: 38 35% 94%;
+    --foreground: 30 14% 12%;
+
+    --card: 38 30% 98%;
+    --card-foreground: 30 14% 12%;
+
+    --popover: 38 30% 98%;
+    --popover-foreground: 30 14% 12%;
+
+    --primary: 30 14% 14%;
+    --primary-foreground: 38 35% 96%;
+
+    --secondary: 36 22% 88%;
+    --secondary-foreground: 30 14% 14%;
+
+    --muted: 36 22% 90%;
+    --muted-foreground: 30 8% 38%;
+
+    --accent: 38 65% 42%;
+    --accent-foreground: 38 35% 96%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 38 35% 96%;
+
+    --border: 30 15% 78%;
+    --input: 30 15% 78%;
+    --ring: 38 65% 42%;
+
+    --sidebar-background: 38 30% 96%;
+    --sidebar-foreground: 30 14% 14%;
+    --sidebar-primary: 30 14% 14%;
+    --sidebar-primary-foreground: 38 35% 96%;
+    --sidebar-accent: 36 22% 90%;
+    --sidebar-accent-foreground: 30 14% 14%;
+    --sidebar-border: 30 15% 80%;
+    --sidebar-ring: 38 65% 42%;
+
+    --page-bg: #f4ede0;
+    --text-strong: #1c1a16;
+    --text-body: rgba(28, 26, 22, 0.78);
+    --text-muted: rgba(28, 26, 22, 0.66);
+    --text-soft: rgba(28, 26, 22, 0.5);
+    --text-faint: rgba(28, 26, 22, 0.42);
+    --text-very-faint: rgba(28, 26, 22, 0.28);
+
+    --brand-gold: #b8860b;
+    --brand-orange: #c2410c;
+    --brand-indigo: #4338ca;
+    --brand-cyan: #0e7490;
+    --brand-violet: #6366f1;
+    --on-brand-gold: #f4ede0;
+
+    --header-bg-scrolled: rgba(244, 237, 224, 0.92);
+    --mobile-overlay-bg: rgba(244, 237, 224, 0.97);
+    --footer-bg: rgba(244, 237, 224, 0.5);
+    --surface-1: rgba(28, 26, 22, 0.04);
+    --surface-2: rgba(28, 26, 22, 0.06);
+    --surface-3: rgba(28, 26, 22, 0.1);
+    --border-soft: rgba(28, 26, 22, 0.08);
+    --border-medium: rgba(28, 26, 22, 0.14);
+    --scrollbar-track: #efe6d4;
+
+    /* Subtle paper grain — repeating SVG noise. Tiny file via data URI. */
+    --paper-grain:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0.07 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
 }
 
@@ -59,35 +166,58 @@
     padding: 0;
     width: 100%;
     overflow-x: hidden;
-    background: #04040b;
+    background: var(--page-bg);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Paper grain overlay — only visible in light mode (var is "none" in dark). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: var(--paper-grain);
+    background-repeat: repeat;
+    opacity: 0.55;
+    mix-blend-mode: multiply;
   }
 
   html {
     scroll-behavior: smooth;
   }
 
-  /* Custom scrollbar to match the dark theme */
   ::-webkit-scrollbar {
     width: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #04040b;
+    background: var(--scrollbar-track);
   }
   ::-webkit-scrollbar-thumb {
     background: rgba(245, 184, 32, 0.3);
     border-radius: 2px;
   }
+  :root.light ::-webkit-scrollbar-thumb {
+    background: rgba(184, 134, 11, 0.4);
+  }
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(245, 184, 32, 0.55);
+  }
+  :root.light ::-webkit-scrollbar-thumb:hover {
+    background: rgba(184, 134, 11, 0.65);
   }
 }
 
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(135deg, #F5B820 0%, #f97316 50%, #6366f1 100%);
+    background: linear-gradient(
+      135deg,
+      var(--brand-gold) 0%,
+      var(--brand-orange) 50%,
+      var(--brand-indigo) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
