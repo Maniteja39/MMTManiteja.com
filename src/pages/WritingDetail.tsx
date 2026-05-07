@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -7,8 +7,17 @@ import remarkGfm from "remark-gfm";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SoundProvider } from "@/lib/sound/SoundProvider";
+import { useTheme } from "@/lib/theme/ThemeContext";
 import { postsApi, type PostResponse } from "@/lib/api";
 import { SEED_POSTS, SEED_POST_BY_SLUG } from "@/data/seedPosts";
+
+/** Average adult reading speed sits around 200 wpm. Round up so a short post
+ *  doesn't read as "0 min". Returns e.g. "4 min read". */
+const readingTime = (markdown: string): string => {
+  const words = markdown.trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+  return `${minutes} min read`;
+};
 
 const SITE_ORIGIN = "https://maniteja.com";
 
@@ -199,6 +208,8 @@ const WritingDetail = () => {
                 style={{ color: "color-mix(in srgb, var(--brand-gold) 70%, transparent)" }}
               >
                 {formatDate(data.publishedAt)}
+                <span className="mx-2 opacity-50">·</span>
+                {readingTime(data.contentMd)}
                 {data.tags ? (
                   <>
                     <span className="mx-2 opacity-50">·</span>
@@ -234,6 +245,8 @@ const WritingDetail = () => {
               </div>
 
               <RelatedPosts currentSlug={data.slug} />
+
+              <Comments slug={data.slug} />
             </article>
           )}
         </main>
@@ -241,6 +254,97 @@ const WritingDetail = () => {
         <Footer />
       </div>
     </SoundProvider>
+  );
+};
+
+/* ────────────────────────────────────────────────────────────
+ * Giscus comments
+ *
+ * Setup (one-time, ~3 minutes):
+ *   1. Make sure GitHub Discussions is ON for the repo:
+ *      https://github.com/Maniteja39/MMTManiteja.com/settings → "Features" → check Discussions
+ *   2. Install the giscus app on the repo:
+ *      https://github.com/apps/giscus → Install → pick this repo only
+ *   3. Visit https://giscus.app, fill in:
+ *        Repo: Maniteja39/MMTManiteja.com
+ *        Mapping: pathname
+ *        Discussion category: pick or create one (e.g. "Comments")
+ *        Theme: preferred_color_scheme (we override at runtime anyway)
+ *   4. Copy the four IDs giscus shows you and paste them into GISCUS_CONFIG below.
+ *
+ * Until repoId/categoryId are filled in, the comments section just doesn't
+ * render — pushing this code without setup is safe.
+ * ──────────────────────────────────────────────────────────── */
+const GISCUS_CONFIG = {
+  repo: "Maniteja39/MMTManiteja.com" as const,
+  repoId: "R_kgDOR_MA7g",
+  category: "General",
+  categoryId: "DIC_kwDOR_MA7s4C8iaq",
+};
+
+const Comments = ({ slug }: { slug: string }) => {
+  const { theme } = useTheme();
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Mount the giscus script the first time this component renders for a given
+  // slug. The script injects an <iframe> into our ref div.
+  useEffect(() => {
+    if (!GISCUS_CONFIG.repoId || !GISCUS_CONFIG.categoryId) return;
+    const container = ref.current;
+    if (!container) return;
+
+    container.innerHTML = ""; // clear any previous iframe (route changes)
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.setAttribute("data-repo", GISCUS_CONFIG.repo);
+    script.setAttribute("data-repo-id", GISCUS_CONFIG.repoId);
+    script.setAttribute("data-category", GISCUS_CONFIG.category);
+    script.setAttribute("data-category-id", GISCUS_CONFIG.categoryId);
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "bottom");
+    script.setAttribute("data-theme", theme);
+    script.setAttribute("data-lang", "en");
+    script.setAttribute("data-loading", "lazy");
+    container.appendChild(script);
+    // We intentionally only rerun on slug change. The theme effect below
+    // updates the iframe in place without remount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
+
+  // When the user toggles the site theme, postMessage to the giscus iframe so
+  // it follows along instead of being stuck on whatever it loaded with.
+  useEffect(() => {
+    if (!GISCUS_CONFIG.repoId || !GISCUS_CONFIG.categoryId) return;
+    const iframe = document.querySelector<HTMLIFrameElement>("iframe.giscus-frame");
+    iframe?.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme } } },
+      "https://giscus.app",
+    );
+  }, [theme]);
+
+  // No config yet — render nothing rather than a broken comments box.
+  if (!GISCUS_CONFIG.repoId || !GISCUS_CONFIG.categoryId) return null;
+
+  return (
+    <section
+      className="mt-16 pt-10"
+      style={{ borderTop: "1px solid var(--border-medium)" }}
+      aria-label="Comments"
+    >
+      <p
+        className="text-xs font-semibold tracking-[0.25em] uppercase mb-6"
+        style={{ color: "var(--brand-gold)" }}
+      >
+        Comments
+      </p>
+      <div ref={ref} />
+    </section>
   );
 };
 
