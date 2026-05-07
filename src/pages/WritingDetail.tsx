@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SoundProvider } from "@/lib/sound/SoundProvider";
 import { postsApi } from "@/lib/api";
+import { SEED_POST_BY_SLUG } from "@/data/seedPosts";
 
 const formatDate = (iso: string | null): string => {
   if (!iso) return "";
@@ -24,7 +25,7 @@ const formatDate = (iso: string | null): string => {
 const WritingDetail = () => {
   const { slug = "" } = useParams<{ slug: string }>();
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data: apiData, isLoading, isError } = useQuery({
     queryKey: ["post", slug],
     queryFn: () => postsApi.get(slug),
     enabled: slug.length > 0,
@@ -32,13 +33,19 @@ const WritingDetail = () => {
     staleTime: 60_000,
   });
 
+  // Fall back to a seed post if the backend doesn't have this slug — covers
+  // both the "backend down" and "post never published" cases.
+  const seed = SEED_POST_BY_SLUG[slug];
+  const data = apiData ?? (isError ? seed : undefined) ?? (!isLoading && !apiData ? seed : undefined);
+  const notFound = !isLoading && !data;
+
   return (
     <SoundProvider>
       <div
         style={{
           minHeight: "100vh",
-          background: "#04040b",
-          color: "#e2e8f0",
+          background: "var(--page-bg)",
+          color: "var(--text-strong)",
         }}
       >
         <Header />
@@ -47,10 +54,10 @@ const WritingDetail = () => {
           <Link
             to="/writings"
             className="inline-flex items-center gap-2 text-sm font-medium mb-10 transition-colors"
-            style={{ color: "rgba(226,232,240,0.55)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B820")}
+            style={{ color: "var(--text-soft)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--brand-gold)")}
             onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "rgba(226,232,240,0.55)")
+              (e.currentTarget.style.color = "var(--text-soft)")
             }
           >
             <ArrowLeft className="w-4 h-4" />
@@ -59,20 +66,19 @@ const WritingDetail = () => {
 
           {isLoading && <ArticleSkeleton />}
 
-          {isError && (
+          {notFound && (
             <div
               className="rounded-2xl p-8 text-center"
               style={{
-                background: "rgba(255,255,255,0.02)",
-                border: "1px dashed rgba(255,255,255,0.12)",
+                background: "var(--surface-1)",
+                border: "1px dashed var(--border-medium)",
               }}
             >
-              <p className="text-lg font-medium mb-2" style={{ color: "#f1f5f9" }}>
+              <p className="text-lg font-medium mb-2" style={{ color: "var(--text-strong)" }}>
                 Post not found
               </p>
-              <p style={{ color: "rgba(226,232,240,0.5)" }}>
-                {(error as Error)?.message ??
-                  "This post may have been unpublished or never existed."}
+              <p style={{ color: "var(--text-muted)" }}>
+                This post may have been unpublished or never existed.
               </p>
             </div>
           )}
@@ -82,7 +88,7 @@ const WritingDetail = () => {
               {/* Meta */}
               <div
                 className="text-xs tracking-[0.25em] mb-4"
-                style={{ color: "rgba(245,184,32,0.7)" }}
+                style={{ color: "color-mix(in srgb, var(--brand-gold) 70%, transparent)" }}
               >
                 {formatDate(data.publishedAt)}
                 {data.tags ? (
@@ -96,7 +102,7 @@ const WritingDetail = () => {
               {/* Title */}
               <h1
                 className="text-3xl sm:text-5xl font-semibold tracking-tight leading-tight mb-6"
-                style={{ color: "#f1f5f9" }}
+                style={{ color: "var(--text-strong)" }}
               >
                 {data.title}
               </h1>
@@ -104,23 +110,16 @@ const WritingDetail = () => {
               {data.excerpt && (
                 <p
                   className="text-lg sm:text-xl leading-relaxed mb-10"
-                  style={{ color: "rgba(226,232,240,0.7)" }}
+                  style={{ color: "var(--text-body)" }}
                 >
                   {data.excerpt}
                 </p>
               )}
 
-              {/* Body — Tailwind Typography plugin gives us reasonable prose defaults. */}
-              <div
-                className="prose prose-invert prose-lg max-w-none
-                           prose-headings:text-slate-100 prose-headings:font-semibold
-                           prose-p:text-slate-300 prose-li:text-slate-300
-                           prose-a:text-[#F5B820] hover:prose-a:underline
-                           prose-code:text-[#F5B820] prose-code:bg-white/5 prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
-                           prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl
-                           prose-blockquote:border-l-[#F5B820] prose-blockquote:text-slate-400
-                           prose-hr:border-white/10"
-              >
+              {/* Body — Tailwind Typography plugin gives us reasonable prose
+                  defaults. The `mmt-prose` class layered on top recolors prose
+                  internals via CSS vars so it follows the theme. */}
+              <div className="prose prose-lg max-w-none mmt-prose">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {data.contentMd}
                 </ReactMarkdown>
