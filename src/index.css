@@ -189,6 +189,28 @@
     scroll-behavior: smooth;
   }
 
+  /* ============================================================
+     Theme transition — applied for ~300ms while the toggle swaps
+     classes on <html>. Animates color/background/border/fill/stroke
+     across the whole tree so the swap reads as a soft fade rather
+     than a hard flip. Removed afterwards so per-element transitions
+     (hover effects, etc.) aren't dampened in steady state.
+  ============================================================ */
+  .theme-transitioning,
+  .theme-transitioning *,
+  .theme-transitioning *::before,
+  .theme-transitioning *::after {
+    transition:
+      background-color 0.3s ease,
+      background 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease,
+      fill 0.3s ease,
+      stroke 0.3s ease,
+      box-shadow 0.3s ease,
+      opacity 0.3s ease !important;
+  }
+
   ::-webkit-scrollbar {
     width: 4px;
   }
