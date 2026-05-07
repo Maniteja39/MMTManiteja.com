@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Maniteja Manchikalapudi — Writings</title>
+    <link>https://maniteja.com/writings</link>
+    <description>Notes on backend architecture, agentic AI, multi-tenant systems, and the unglamorous half of shipping software.</description>
+    <language>en-US</language>
+    <copyright>Copyright Maniteja Manchikalapudi. All rights reserved.</copyright>
+    <managingEditor>manitejajavadev@gmail.com (Maniteja Manchikalapudi)</managingEditor>
+    <webMaster>manitejajavadev@gmail.com (Maniteja Manchikalapudi)</webMaster>
+    <lastBuildDate>Wed, 29 Apr 2026 16:00:00 GMT</lastBuildDate>
+    <atom:link href="https://maniteja.com/rss.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title>What changes when an agent owns the workflow</title>
+      <link>https://maniteja.com/writings/what-changes-when-an-agent-owns-the-workflow</link>
+      <guid isPermaLink="true">https://maniteja.com/writings/what-changes-when-an-agent-owns-the-workflow</guid>
+      <pubDate>Wed, 29 Apr 2026 16:00:00 GMT</pubDate>
+      <author>manitejajavadev@gmail.com (Maniteja Manchikalapudi)</author>
+      <category>Agentic AI</category>
+      <category>Engineering</category>
+      <description>Moving from "code that does X" to "context that lets an agent figure out X" reshapes more of the engineering practice than I expected.</description>
+    </item>
+
+    <item>
+      <title>The boring infrastructure under agentic AI</title>
+      <link>https://maniteja.com/writings/the-boring-infrastructure-under-agentic-ai</link>
+      <guid isPermaLink="true">https://maniteja.com/writings/the-boring-infrastructure-under-agentic-ai</guid>
+      <pubDate>Wed, 22 Apr 2026 16:00:00 GMT</pubDate>
+      <author>manitejajavadev@gmail.com (Maniteja Manchikalapudi)</author>
+      <category>Agentic AI</category>
+      <category>Infrastructure</category>
+      <description>The model is the small dependency. The system around it is the product.</description>
+    </item>
+
+    <item>
+      <title>Why agentic systems break differently than microservices</title>
+      <link>https://maniteja.com/writings/why-agentic-systems-break-differently</link>
+      <guid isPermaLink="true">https://maniteja.com/writings/why-agentic-systems-break-differently</guid>
+      <pubDate>Wed, 15 Apr 2026 16:00:00 GMT</pubDate>
+      <author>manitejajavadev@gmail.com (Maniteja Manchikalapudi)</author>
+      <category>Agentic AI</category>
+      <category>Distributed Systems</category>
+      <description>Years of distributed-systems failures gave me a debugging playbook. Agents break that playbook in ways worth naming.</description>
+    </item>
+  </channel>
+</rss>

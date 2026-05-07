@@ -8,27 +8,61 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SoundProvider } from "@/lib/sound/SoundProvider";
 import { postsApi, type PostResponse } from "@/lib/api";
-import { SEED_POST_BY_SLUG } from "@/data/seedPosts";
+import { SEED_POSTS, SEED_POST_BY_SLUG } from "@/data/seedPosts";
 
 const SITE_ORIGIN = "https://maniteja.com";
 
+/** Update an existing <head> meta tag's content; remember the original so we can
+ *  restore on unmount. Returns null if the selector doesn't match. */
+const overrideMeta = (
+  selector: string,
+  attribute: string,
+  value: string,
+): { el: Element; attribute: string; original: string | null } | null => {
+  const el = document.head.querySelector(selector);
+  if (!el) return null;
+  const original = el.getAttribute(attribute);
+  el.setAttribute(attribute, value);
+  return { el, attribute, original };
+};
+
 /**
- * Inject a BlogPosting JSON-LD <script> into <head> for the active post and
- * update document.title. Both get cleaned up when the post unmounts so the
- * site-wide schema in index.html remains the source of truth on other routes.
+ * Inject per-post metadata while a writing is open:
+ *   - <title>
+ *   - Open Graph + Twitter Card overrides (so link unfurls show the post)
+ *   - BlogPosting JSON-LD (for rich snippets)
+ *   - BreadcrumbList JSON-LD (for "Home › Writings › <title>" in search results)
+ *   - <link rel="canonical"> pointing at this post
+ *
+ * Everything is reverted when the post unmounts so the site-wide tags in
+ * index.html remain the source of truth on every other route.
  */
 const usePostMetadata = (post: PostResponse | undefined) => {
   useEffect(() => {
     if (!post) return;
 
+    const url = `${SITE_ORIGIN}/writings/${post.slug}`;
+    const description = post.excerpt ?? "";
     const previousTitle = document.title;
     document.title = `${post.title} — Maniteja Manchikalapudi`;
 
-    const schema = {
+    // Override head meta tags so social cards / canonical reflect the post.
+    const overrides = [
+      overrideMeta('meta[property="og:type"]', "content", "article"),
+      overrideMeta('meta[property="og:title"]', "content", post.title),
+      overrideMeta('meta[property="og:description"]', "content", description),
+      overrideMeta('meta[property="og:url"]', "content", url),
+      overrideMeta('meta[name="twitter:title"]', "content", post.title),
+      overrideMeta('meta[name="twitter:description"]', "content", description),
+      overrideMeta('link[rel="canonical"]', "href", url),
+    ].filter(Boolean) as Array<{ el: Element; attribute: string; original: string | null }>;
+
+    // BlogPosting schema — rich snippets in Google search results.
+    const blogPosting = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": post.title,
-      "description": post.excerpt ?? undefined,
+      "description": description || undefined,
       "datePublished": post.publishedAt ?? undefined,
       "dateModified": post.updatedAt ?? post.publishedAt ?? undefined,
       "author": {
@@ -38,24 +72,44 @@ const usePostMetadata = (post: PostResponse | undefined) => {
         "url": `${SITE_ORIGIN}/`,
       },
       "publisher": { "@id": `${SITE_ORIGIN}/#person` },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `${SITE_ORIGIN}/writings/${post.slug}`,
-      },
-      "url": `${SITE_ORIGIN}/writings/${post.slug}`,
+      "mainEntityOfPage": { "@type": "WebPage", "@id": url },
+      "url": url,
       "image": `${SITE_ORIGIN}/preview.png`,
       "keywords": post.tags ?? undefined,
     };
 
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.dataset.blogPosting = post.slug;
-    script.text = JSON.stringify(schema);
-    document.head.appendChild(script);
+    // BreadcrumbList — Google shows "Home › Writings › <title>" in results.
+    const breadcrumbs = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_ORIGIN}/` },
+        { "@type": "ListItem", "position": 2, "name": "Writings", "item": `${SITE_ORIGIN}/writings` },
+        { "@type": "ListItem", "position": 3, "name": post.title, "item": url },
+      ],
+    };
+
+    const blogScript = document.createElement("script");
+    blogScript.type = "application/ld+json";
+    blogScript.dataset.blogPosting = post.slug;
+    blogScript.text = JSON.stringify(blogPosting);
+    document.head.appendChild(blogScript);
+
+    const crumbScript = document.createElement("script");
+    crumbScript.type = "application/ld+json";
+    crumbScript.dataset.breadcrumbs = post.slug;
+    crumbScript.text = JSON.stringify(breadcrumbs);
+    document.head.appendChild(crumbScript);
 
     return () => {
-      script.remove();
+      blogScript.remove();
+      crumbScript.remove();
       document.title = previousTitle;
+      // Restore original head meta tag values.
+      overrides.forEach(({ el, attribute, original }) => {
+        if (original === null) el.removeAttribute(attribute);
+        else el.setAttribute(attribute, original);
+      });
     };
   }, [post]);
 };
@@ -178,6 +232,8 @@ const WritingDetail = () => {
                   {data.contentMd}
                 </ReactMarkdown>
               </div>
+
+              <RelatedPosts currentSlug={data.slug} />
             </article>
           )}
         </main>
@@ -185,6 +241,64 @@ const WritingDetail = () => {
         <Footer />
       </div>
     </SoundProvider>
+  );
+};
+
+/** Show two other writings at the bottom of the post — gives Google internal
+ *  link signals and keeps readers moving through the site. Pulls from the seed
+ *  posts; once the API has its own posts the same logic could read those. */
+const RelatedPosts = ({ currentSlug }: { currentSlug: string }) => {
+  const others = SEED_POSTS.filter((p) => p.slug !== currentSlug).slice(0, 2);
+  if (others.length === 0) return null;
+
+  return (
+    <aside
+      className="mt-16 pt-10"
+      style={{ borderTop: "1px solid var(--border-medium)" }}
+    >
+      <p
+        className="text-xs font-semibold tracking-[0.25em] uppercase mb-6"
+        style={{ color: "var(--brand-gold)" }}
+      >
+        More writings
+      </p>
+      <ul className="grid gap-4 sm:grid-cols-2">
+        {others.map((p) => (
+          <li key={p.slug}>
+            <Link
+              to={`/writings/${encodeURIComponent(p.slug)}`}
+              className="block rounded-xl p-5 h-full transition-colors"
+              style={{
+                background: "var(--surface-1)",
+                border: "1px solid var(--border-medium)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor =
+                  "color-mix(in srgb, var(--brand-gold) 35%, transparent)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border-medium)";
+              }}
+            >
+              <h3
+                className="text-base font-semibold leading-snug mb-2"
+                style={{ color: "var(--text-strong)" }}
+              >
+                {p.title}
+              </h3>
+              {p.excerpt && (
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {p.excerpt}
+                </p>
+              )}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </aside>
   );
 };
 
