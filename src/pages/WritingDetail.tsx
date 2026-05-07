@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -6,8 +7,58 @@ import remarkGfm from "remark-gfm";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SoundProvider } from "@/lib/sound/SoundProvider";
-import { postsApi } from "@/lib/api";
+import { postsApi, type PostResponse } from "@/lib/api";
 import { SEED_POST_BY_SLUG } from "@/data/seedPosts";
+
+const SITE_ORIGIN = "https://maniteja.com";
+
+/**
+ * Inject a BlogPosting JSON-LD <script> into <head> for the active post and
+ * update document.title. Both get cleaned up when the post unmounts so the
+ * site-wide schema in index.html remains the source of truth on other routes.
+ */
+const usePostMetadata = (post: PostResponse | undefined) => {
+  useEffect(() => {
+    if (!post) return;
+
+    const previousTitle = document.title;
+    document.title = `${post.title} — Maniteja Manchikalapudi`;
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt ?? undefined,
+      "datePublished": post.publishedAt ?? undefined,
+      "dateModified": post.updatedAt ?? post.publishedAt ?? undefined,
+      "author": {
+        "@type": "Person",
+        "@id": `${SITE_ORIGIN}/#person`,
+        "name": "Maniteja Manchikalapudi",
+        "url": `${SITE_ORIGIN}/`,
+      },
+      "publisher": { "@id": `${SITE_ORIGIN}/#person` },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `${SITE_ORIGIN}/writings/${post.slug}`,
+      },
+      "url": `${SITE_ORIGIN}/writings/${post.slug}`,
+      "image": `${SITE_ORIGIN}/preview.png`,
+      "keywords": post.tags ?? undefined,
+    };
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.dataset.blogPosting = post.slug;
+    script.text = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+    return () => {
+      script.remove();
+      document.title = previousTitle;
+    };
+  }, [post]);
+};
 
 const formatDate = (iso: string | null): string => {
   if (!iso) return "";
@@ -38,6 +89,9 @@ const WritingDetail = () => {
   const seed = SEED_POST_BY_SLUG[slug];
   const data = apiData ?? (isError ? seed : undefined) ?? (!isLoading && !apiData ? seed : undefined);
   const notFound = !isLoading && !data;
+
+  // Per-post <title> + BlogPosting JSON-LD for rich snippets.
+  usePostMetadata(data);
 
   return (
     <SoundProvider>

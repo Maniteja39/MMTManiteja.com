@@ -29,8 +29,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   const apply = useCallback((next: Theme) => {
     const root = document.documentElement;
+
+    // Briefly tag the document so a global CSS rule can apply transitions to
+    // colors/backgrounds across the whole tree during the swap. Removed after
+    // the transition window so per-element transitions (hover, etc.) aren't
+    // dampened in steady state.
+    root.classList.add("theme-transitioning");
     root.classList.remove("light", "dark");
     root.classList.add(next);
+    window.setTimeout(() => {
+      root.classList.remove("theme-transitioning");
+    }, 350);
+
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
