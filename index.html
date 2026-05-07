@@ -160,12 +160,22 @@
          THEME INIT — runs before React mounts so the page
          renders with the correct theme on first paint
          (avoids flash of wrong theme on reload).
+
+         Resolution order:
+           1. User's saved preference (sticky once they toggle)
+           2. Time of day on first visit — light 7am-7pm, else dark
+           3. Hard fallback: dark (matches the rest of the site)
     ====================================================== -->
     <script>
       (function () {
         try {
           var saved = localStorage.getItem("theme");
-          var theme = saved === "light" ? "light" : "dark";
+          if (saved === "light" || saved === "dark") {
+            document.documentElement.classList.add(saved);
+            return;
+          }
+          var hour = new Date().getHours();
+          var theme = hour >= 7 && hour < 19 ? "light" : "dark";
           document.documentElement.classList.add(theme);
         } catch (_) {
           document.documentElement.classList.add("dark");
