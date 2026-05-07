@@ -21,15 +21,17 @@ const Footer = () => {
           >
             LinkedIn
           </a>
-          <a
-            href="#"
-            className="text-sm transition-colors duration-200"
-            style={{ color: "rgba(226,232,240,0.4)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B820")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(226,232,240,0.4)")}
-          >
-            GitHub
-          </a>
+                    <a
+                      href="https://github.com/Maniteja39"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm transition-colors duration-200"
+                      style={{ color: "rgba(226,232,240,0.4)" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "#F5B820")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(226,232,240,0.4)")}
+                    >
+                      GitHub
+                    </a>
         </div>
         <p className="text-xs" style={{ color: "rgba(226,232,240,0.25)" }}>
           &copy; {new Date().getFullYear()} Maniteja Manchikalapudi. All rights reserved.
