@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Writings from "./pages/Writings.tsx";
 import WritingDetail from "./pages/WritingDetail.tsx";
+import Now from "./pages/Now.tsx";
 import Login from "./pages/admin/Login.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import Dashboard from "./pages/admin/Dashboard.tsx";
@@ -38,6 +39,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/writings" element={<Writings />} />
                 <Route path="/writings/:slug" element={<WritingDetail />} />
+                <Route path="/now" element={<Now />} />
 
                 {/* Admin — login is public; everything under /admin is gated. */}
                 <Route path="/admin/login" element={<Login />} />

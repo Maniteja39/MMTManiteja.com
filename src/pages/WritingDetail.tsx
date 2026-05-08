@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Check, Copy } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Header from "@/components/Header";
@@ -18,6 +18,25 @@ const readingTime = (markdown: string): string => {
   const minutes = Math.max(1, Math.round(words / 200));
   return `${minutes} min read`;
 };
+
+/** Pull the plain-text content out of ReactMarkdown's children prop, which can
+ *  be a string, an array, or nested React nodes. Used to slugify headings. */
+const nodeToText = (node: ReactNode): string => {
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(nodeToText).join("");
+  if (node && typeof node === "object" && "props" in node) {
+    return nodeToText((node as { props: { children?: ReactNode } }).props.children);
+  }
+  return "";
+};
+
+/** Convert "Why agentic systems break" → "why-agentic-systems-break". */
+const slugify = (text: string): string =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
 
 const SITE_ORIGIN = "https://maniteja.com";
 
@@ -165,6 +184,7 @@ const WritingDetail = () => {
           color: "var(--text-strong)",
         }}
       >
+        <ReadingProgress />
         <Header />
 
         <main className="container mx-auto px-5 sm:px-8 lg:px-16 pt-32 sm:pt-36 pb-24 max-w-3xl">
@@ -239,7 +259,18 @@ const WritingDetail = () => {
                   defaults. The `mmt-prose` class layered on top recolors prose
                   internals via CSS vars so it follows the theme. */}
               <div className="prose prose-lg max-w-none mmt-prose">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h2: ({ children }) => (
+                      <AnchoredHeading level={2}>{children}</AnchoredHeading>
+                    ),
+                    h3: ({ children }) => (
+                      <AnchoredHeading level={3}>{children}</AnchoredHeading>
+                    ),
+                    pre: ({ children }) => <CodeBlock>{children}</CodeBlock>,
+                  }}
+                >
                   {data.contentMd}
                 </ReactMarkdown>
               </div>
@@ -254,6 +285,119 @@ const WritingDetail = () => {
         <Footer />
       </div>
     </SoundProvider>
+  );
+};
+
+/** Thin gold progress bar at the very top of the viewport — mirrors how far
+ *  the reader has scrolled through the page. Fixed-position so it stays
+ *  visible above the LiveClock and Header. */
+const ReadingProgress = () => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      const max =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        height: 2,
+        width: `${progress}%`,
+        background: "var(--brand-gold)",
+        boxShadow: "0 0 8px color-mix(in srgb, var(--brand-gold) 60%, transparent)",
+        zIndex: 100,
+        transition: "width 0.1s linear",
+      }}
+    />
+  );
+};
+
+/** Markdown code block with a copy button overlaid in the top-right corner.
+ *  The button shows a check icon for ~2s after a successful copy. Falls back
+ *  silently if clipboard access is denied (no error UI — readers can still
+ *  select-and-copy manually). */
+const CodeBlock = ({ children }: { children: ReactNode }) => {
+  const ref = useRef<HTMLPreElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    const text = ref.current?.innerText ?? "";
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard write may be blocked (insecure origin, permissions). No-op.
+    }
+  };
+
+  return (
+    <div className="relative group">
+      <pre ref={ref}>{children}</pre>
+      <button
+        onClick={copy}
+        aria-label={copied ? "Copied" : "Copy code"}
+        className="absolute top-3 right-3 p-2 rounded-md transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100"
+        style={{
+          background: "var(--surface-2)",
+          border: "1px solid var(--border-medium)",
+          color: copied ? "var(--brand-gold)" : "var(--text-soft)",
+          backdropFilter: "blur(4px)",
+        }}
+      >
+        {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+      </button>
+    </div>
+  );
+};
+
+/** A heading that gets a stable `id` derived from its text, plus a small
+ *  hash-link button on hover. Lets readers deep-link to specific sections. */
+const AnchoredHeading = ({
+  level,
+  children,
+}: {
+  level: 2 | 3;
+  children: ReactNode;
+}) => {
+  const text = nodeToText(children);
+  const id = slugify(text);
+  const Tag = (`h${level}`) as "h2" | "h3";
+
+  return (
+    <Tag id={id} className="group scroll-mt-32">
+      {children}
+      <a
+        href={`#${id}`}
+        aria-label={`Link to "${text}"`}
+        className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity no-underline"
+        style={{ color: "var(--brand-gold)", fontWeight: 400 }}
+        onClick={(e) => {
+          // Update URL without scroll-jump (heading already has scroll-mt).
+          e.preventDefault();
+          history.replaceState(null, "", `#${id}`);
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }}
+      >
+        #
+      </a>
+    </Tag>
   );
 };
 

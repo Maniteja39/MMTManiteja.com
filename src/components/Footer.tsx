@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer
@@ -9,7 +11,25 @@ const Footer = () => {
       }}
     >
       <div className="container mx-auto px-5 sm:px-8">
-        <div className="flex justify-center gap-8 mb-4">
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-4">
+          <Link
+            to="/now"
+            className="text-sm transition-colors duration-200"
+            style={{ color: "var(--text-faint)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--brand-gold)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-faint)")}
+          >
+            Now
+          </Link>
+          <a
+            href="/rss.xml"
+            className="text-sm transition-colors duration-200"
+            style={{ color: "var(--text-faint)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--brand-gold)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-faint)")}
+          >
+            RSS
+          </a>
           <a
             href="https://www.linkedin.com/in/maniteja-m-6987a71b9/"
             target="_blank"

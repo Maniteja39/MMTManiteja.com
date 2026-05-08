@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
-import { Download } from "lucide-react";
+import { Download, ArrowRight } from "lucide-react";
 import { useSound } from "@/lib/sound/SoundProvider";
+import { SEED_POSTS } from "@/data/seedPosts";
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -123,6 +125,47 @@ const HeroSection = () => {
               Resume
             </a>
           </div>
+
+          {/* Featured writing — links to the most recent post so the hero
+              quietly drives readers toward the blog. */}
+          {SEED_POSTS.length > 0 && (
+            <div
+              className="hero-in mt-10 sm:mt-12"
+              style={{ opacity: 0 }}
+            >
+              <Link
+                to={`/writings/${SEED_POSTS[0].slug}`}
+                className="group inline-flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-colors"
+                style={{
+                  background: "var(--surface-1)",
+                  border: "1px solid var(--border-medium)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor =
+                    "color-mix(in srgb, var(--brand-gold) 40%, transparent)";
+                  play("hover");
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-medium)";
+                }}
+                onClick={() => play("whoosh")}
+              >
+                <span
+                  className="text-[10px] font-semibold tracking-[0.22em] uppercase"
+                  style={{ color: "var(--brand-gold)" }}
+                >
+                  New
+                </span>
+                <span style={{ color: "var(--text-strong)" }}>
+                  {SEED_POSTS[0].title}
+                </span>
+                <ArrowRight
+                  className="w-4 h-4 transition-transform group-hover:translate-x-0.5"
+                  style={{ color: "var(--brand-gold)" }}
+                />
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Scroll indicator — hidden on small phones */}
