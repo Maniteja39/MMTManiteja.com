@@ -246,9 +246,16 @@
   }
 
   /* ============================================================
-     mmt-prose — theme-aware overrides for the @tailwindcss/typography
-     plugin. We re-point the plugin's internal CSS vars at our brand
-     tokens so blog posts stay readable in both modes.
+     mmt-prose — theme-aware styling for blog post bodies.
+     Layered on top of @tailwindcss/typography so headings,
+     paragraphs, lists, and quotes get a real visual rhythm
+     instead of one undifferentiated wall of text.
+
+     Design language:
+       • Auto-numbered section markers (01, 02, ...) above H2
+       • Top-border on H2 acts as a section divider
+       • First paragraph of a post reads slightly larger as a lead-in
+       • Gold brand accents on lists, quotes, code, and dividers
   ============================================================ */
   .mmt-prose {
     --tw-prose-body: var(--text-body);
@@ -267,21 +274,198 @@
     --tw-prose-pre-bg: var(--surface-1);
     --tw-prose-th-borders: var(--border-medium);
     --tw-prose-td-borders: var(--border-soft);
+
+    /* H2 section counter starts fresh per article. */
+    counter-reset: mmt-section;
+    font-feature-settings: "kern", "liga", "calt";
   }
-  .mmt-prose a:hover {
-    text-decoration: underline;
+
+  /* ───── Paragraphs ───── */
+  .mmt-prose p {
+    line-height: 1.82;
+    margin-top: 0;
+    margin-bottom: 1.5em;
+    font-size: 1.025rem;
   }
+  /* Lead paragraph — the first paragraph of body sets the tone, so
+     give it a touch more presence than the rest. */
+  .mmt-prose > p:first-of-type {
+    font-size: 1.18rem;
+    line-height: 1.7;
+    color: var(--text-strong);
+    margin-bottom: 1.7em;
+  }
+
+  /* ───── H2: section heading with gold counter prefix ───── */
+  .mmt-prose h2 {
+    counter-increment: mmt-section;
+    position: relative;
+    font-size: clamp(1.5rem, 2.4vw, 1.85rem);
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+    margin-top: 4rem;
+    margin-bottom: 1.1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-strong);
+  }
+  /* "01", "02", ... in gold above each H2. CSS counter — no
+     markdown change required to add or reorder sections. */
+  .mmt-prose h2::before {
+    content: counter(mmt-section, decimal-leading-zero);
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--brand-gold);
+    margin-bottom: 0.7rem;
+  }
+  /* First H2 in the article shouldn't have a top border — it would
+     fight with the article header above it. */
+  .mmt-prose h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 3rem;
+  }
+
+  /* ───── H3 ───── */
+  .mmt-prose h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    margin-top: 2.4rem;
+    margin-bottom: 0.7rem;
+    color: var(--text-strong);
+  }
+
+  /* ───── Inline emphasis ───── */
+  .mmt-prose strong {
+    font-weight: 600;
+    color: var(--text-strong);
+  }
+  .mmt-prose em {
+    color: var(--text-strong);
+    font-style: italic;
+  }
+
+  /* ───── Lists ───── */
+  .mmt-prose ul,
+  .mmt-prose ol {
+    margin-top: 1.4em;
+    margin-bottom: 1.6em;
+    padding-left: 1.5em;
+  }
+  .mmt-prose li {
+    margin-top: 0.55em;
+    margin-bottom: 0.55em;
+    padding-left: 0.3em;
+    line-height: 1.75;
+  }
+  .mmt-prose ul li::marker {
+    color: var(--brand-gold);
+  }
+  .mmt-prose ol li::marker {
+    color: var(--brand-gold);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ───── Blockquote — pull-quote treatment ───── */
+  .mmt-prose blockquote {
+    border-left: 3px solid var(--brand-gold);
+    margin: 2rem 0;
+    padding: 0.4rem 1.4rem;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.08rem;
+    color: var(--text-strong);
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-gold) 7%, transparent),
+      transparent 70%
+    );
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .mmt-prose blockquote p {
+    margin: 0.4em 0;
+  }
+  .mmt-prose blockquote p:first-of-type {
+    font-size: inherit;
+    line-height: 1.7;
+  }
+
+  /* ───── Inline code ───── */
   .mmt-prose code {
     background: var(--surface-1);
-    border-radius: 0.25rem;
-    padding: 0.125rem 0.4rem;
-    font-size: 0.9em;
+    border: 1px solid var(--border-soft);
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.42rem;
+    font-size: 0.88em;
+    color: var(--brand-gold);
+    font-feature-settings: "liga" 0;
   }
   .mmt-prose code::before,
   .mmt-prose code::after {
     content: "";
   }
+
+  /* ───── Code block ───── */
   .mmt-prose pre {
     border: 1px solid var(--border-medium);
+    border-radius: 0.6rem;
+    padding: 1.1rem 1.25rem;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    overflow-x: auto;
+  }
+  /* Code inside a pre shouldn't carry the inline pill styling. */
+  .mmt-prose pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--text-strong);
+    font-size: inherit;
+  }
+
+  /* ───── Horizontal rule — three centered gold dots ───── */
+  .mmt-prose hr {
+    border: none;
+    height: 1.5rem;
+    text-align: center;
+    margin: 3rem 0;
+    background: none;
+  }
+  .mmt-prose hr::before {
+    content: "· · ·";
+    letter-spacing: 0.55em;
+    color: var(--brand-gold);
+    font-size: 1.4rem;
+    opacity: 0.55;
+  }
+
+  /* ───── Links ───── */
+  .mmt-prose a {
+    color: var(--brand-gold);
+    text-decoration: none;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--brand-gold) 35%, transparent);
+    transition: border-color 0.15s ease;
+  }
+  .mmt-prose a:hover {
+    border-bottom-color: var(--brand-gold);
+    text-decoration: none;
+  }
+  /* The "#" anchor link inside h2/h3 from AnchoredHeading shouldn't
+     get the underline/border treatment — it has its own hover style. */
+  .mmt-prose h2 a,
+  .mmt-prose h3 a {
+    border-bottom: none;
+  }
+  .mmt-prose h2 a:hover,
+  .mmt-prose h3 a:hover {
+    border-bottom: none;
   }
 }
